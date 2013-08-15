@@ -13,6 +13,23 @@ typedef enum {
     ATPathSpecEntryTypeFolder,
 } ATPathSpecEntryType;
 
+typedef enum {
+    ATPathSpecSyntaxOptionsAllowBackslashEscape = 0x01,
+    ATPathSpecSyntaxOptionsAllowNewlineList = 0x02,
+    ATPathSpecSyntaxOptionsAllowCommaList = 0x04,
+    ATPathSpecSyntaxOptionsAllowPipeUnion = 0x08,
+    ATPathSpecSyntaxOptionsAllowAmpersandIntersection = 0x10,
+    ATPathSpecSyntaxOptionsAllowParen = 0x20,
+    ATPathSpecSyntaxOptionsAllowBangNegation = 0x40,
+    ATPathSpecSyntaxOptionsAllowHashComment = 0x80,
+    ATPathSpecSyntaxOptionsRequireTrailingSlashForFolders = 0x100,
+
+    ATPathSpecSyntaxOptionsPlainMask = 0,
+    ATPathSpecSyntaxOptionsPlainList = ATPathSpecSyntaxOptionsAllowNewlineList,
+    ATPathSpecSyntaxOptionsGitignore = ATPathSpecSyntaxOptionsAllowBackslashEscape | ATPathSpecSyntaxOptionsAllowNewlineList | ATPathSpecSyntaxOptionsAllowBangNegation | ATPathSpecSyntaxOptionsAllowHashComment,
+    ATPathSpecSyntaxOptionsExtended = ATPathSpecSyntaxOptionsAllowBackslashEscape | ATPathSpecSyntaxOptionsAllowNewlineList | ATPathSpecSyntaxOptionsAllowCommaList | ATPathSpecSyntaxOptionsAllowPipeUnion | ATPathSpecSyntaxOptionsAllowAmpersandIntersection | ATPathSpecSyntaxOptionsAllowParen | ATPathSpecSyntaxOptionsAllowBangNegation | ATPathSpecSyntaxOptionsAllowHashComment | ATPathSpecSyntaxOptionsRequireTrailingSlashForFolders,
+} ATPathSpecSyntaxOptions;
+
 
 NSString *const ATPathSpecErrorDomain;
 NSString *const ATPathSpecErrorSpecStringKey;
@@ -24,8 +41,8 @@ typedef enum {
 
 @interface ATPathSpec : NSObject
 
-+ (ATPathSpec *)pathSpecWithString:(NSString *)string;
-+ (ATPathSpec *)pathSpecWithString:(NSString *)string error:(NSError **)error;
++ (ATPathSpec *)pathSpecWithString:(NSString *)string syntaxOptions:(ATPathSpecSyntaxOptions)options;
++ (ATPathSpec *)pathSpecWithString:(NSString *)string syntaxOptions:(ATPathSpecSyntaxOptions)options error:(NSError **)error;
 
 + (ATPathSpec *)pathSpecMatchingNameSuffix:(NSString *)suffix type:(ATPathSpecEntryType)type;
 + (ATPathSpec *)pathSpecMatchingUnionOf:(NSArray *)specs;

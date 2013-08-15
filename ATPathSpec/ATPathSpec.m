@@ -7,17 +7,180 @@ NSString *const ATPathSpecErrorDomain = @"ATPathSpecErrorDomain";
 NSString *const ATPathSpecErrorSpecStringKey = @"ATPathSpecErrorSpecString";
 
 
+static NSString *ATPathSpecTokenTypeNames[] = {
+    @"NONE",
+    @"Mask",
+    @"!",
+    @";",
+    @",",
+    @"|",
+    @"&",
+    @"(",
+    @")",
+};
+
+
 #define return_error(returnValue, outError, error)  do { \
         if (outError) *outError = error; \
         return nil; \
     } while(0)
 
 
+
+@implementation ATPathSpec (ATPathSpecParsing)
+
++ (void)enumerateTokensInString:(NSString *)string withSyntaxOptions:(ATPathSpecSyntaxOptions)options usingBlock:(ATPathSpecTokenBlock)block decodeTokens:(BOOL)decodeTokens {
+    BOOL escapeEnabled = !!(options & ATPathSpecSyntaxOptionsAllowBackslashEscape);
+    BOOL negationEnabled = !!(options & ATPathSpecSyntaxOptionsAllowBangNegation);
+
+    NSCharacterSet *escapeCharacters = escapeEnabled ? [NSCharacterSet characterSetWithCharactersInString:@"\\"] : [NSCharacterSet new];
+    NSCharacterSet *whitespaceCharacters = [NSCharacterSet whitespaceCharacterSet];
+    NSCharacterSet *newlineCharacters = [NSCharacterSet newlineCharacterSet];
+
+    NSMutableCharacterSet *specialCharacters = [NSMutableCharacterSet new];
+    [specialCharacters formUnionWithCharacterSet:escapeCharacters];
+    if (options & ATPathSpecSyntaxOptionsAllowNewlineList)
+        [specialCharacters addCharactersInString:@"\n"];
+    if (options & ATPathSpecSyntaxOptionsAllowCommaList)
+        [specialCharacters addCharactersInString:@","];
+    if (options & ATPathSpecSyntaxOptionsAllowPipeUnion)
+        [specialCharacters addCharactersInString:@"|"];
+    if (options & ATPathSpecSyntaxOptionsAllowAmpersandIntersection)
+        [specialCharacters addCharactersInString:@"&"];
+    if (options & ATPathSpecSyntaxOptionsAllowParen)
+        [specialCharacters addCharactersInString:@"()"];
+    if (options & ATPathSpecSyntaxOptionsAllowHashComment)
+        [specialCharacters addCharactersInString:@"#"];
+
+    // don't include unary operators ("!") into the specialCharacters because they have no special meaning unless they start the mask
+
+    NSUInteger len = string.length;
+    unichar buffer[len];
+    [string getCharacters:buffer range:NSMakeRange(0, len)];
+
+    NSUInteger textTokenStart = 0;
+    NSUInteger searchStart = textTokenStart;
+    while (textTokenStart < len) {
+        NSUInteger specialPos = (searchStart >= len ? NSNotFound : [string rangeOfCharacterFromSet:specialCharacters options:0 range:NSMakeRange(searchStart, len - searchStart)].location);
+
+        // skip the escape sequence
+        if (escapeEnabled && specialPos != NSNotFound && [escapeCharacters characterIsMember:buffer[specialPos]]) {
+            searchStart = specialPos + 2;  // don't interpret the next character as a special operator
+            continue;
+        }
+
+        NSUInteger textTokenEnd = (specialPos == NSNotFound ? len : specialPos);
+
+        // handle unary operators (and leading whitespace)
+        while (textTokenStart < textTokenEnd) {
+            // skip leading whitespace
+            while (textTokenStart < textTokenEnd && [whitespaceCharacters characterIsMember:buffer[textTokenStart]])
+                ++textTokenStart;
+
+            // unary operators
+            if (negationEnabled && buffer[textTokenStart] == '!') {
+                block(ATPathSpecTokenTypeNegation, NSMakeRange(textTokenStart, 1), nil);
+                ++textTokenStart;
+            } else {
+                break;
+            }
+        }
+
+        // skip trailing whitespace
+        while (textTokenStart < textTokenEnd && [whitespaceCharacters characterIsMember:buffer[textTokenEnd - 1]])
+            --textTokenEnd;
+
+        // handle regular text
+        if (textTokenStart < textTokenEnd) {
+            NSRange textTokenRange = NSMakeRange(textTokenStart, textTokenEnd - textTokenStart);
+            NSString *textTokenString = nil;
+            if (decodeTokens) {
+                textTokenString = [self decodeEscapesInString:[[string substringWithRange:textTokenRange] stringByTrimmingCharactersInSet:whitespaceCharacters]];
+            }
+            block(ATPathSpecTokenTypeMask, textTokenRange, textTokenString);
+        }
+
+        if (specialPos == NSNotFound)
+            return;
+
+        if (buffer[specialPos] == '#') {
+            // skip comment
+            NSUInteger eol = [string rangeOfCharacterFromSet:newlineCharacters options:0 range:NSMakeRange(specialPos+1, len - (specialPos+1))].location;
+            if (eol == NSNotFound) {
+                eol = len;
+            } else {
+                block(ATPathSpecTokenTypeNewline, NSMakeRange(eol, 1), nil);
+            }
+            textTokenStart = searchStart = eol + 1;
+        } else {
+            ATPathSpecTokenType type;
+            switch (buffer[specialPos]) {
+                case '\n':  type = ATPathSpecTokenTypeNewline; break;
+                case ',':   type = ATPathSpecTokenTypeComma; break;
+                case '|':   type = ATPathSpecTokenTypeUnion; break;
+                case '&':   type = ATPathSpecTokenTypeIntersection; break;
+                case '(':   type = ATPathSpecTokenTypeOpenParen; break;
+                case ')':   type = ATPathSpecTokenTypeCloseParen; break;
+                default:    abort();
+            }
+            block(type, NSMakeRange(specialPos, 1), nil);
+
+            textTokenStart = searchStart = specialPos + 1;
+        }
+    }
+}
+
++ (NSString *)describeTokensInString:(NSString *)string withSyntaxOptions:(ATPathSpecSyntaxOptions)options {
+    NSMutableArray *description = [NSMutableArray new];
+    [self enumerateTokensInString:string withSyntaxOptions:options usingBlock:^(ATPathSpecTokenType type, NSRange range, NSString *decoded) {
+        if (type == ATPathSpecTokenTypeMask)
+            [description addObject:[NSString stringWithFormat:@"Mask(%@)", decoded]];
+        else
+            [description addObject:ATPathSpecTokenTypeNames[type]];
+    } decodeTokens:YES];
+    return [description componentsJoinedByString:@" "];
+}
+
++ (NSString *)decodeEscapesInString:(NSString *)string {
+    static NSCharacterSet *escapes;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        escapes = [NSCharacterSet characterSetWithCharactersInString:@"\\"];
+    });
+    
+    NSRange range = [string rangeOfCharacterFromSet:escapes];
+    if (range.location == NSNotFound)
+        return string;
+
+    NSUInteger srclen = string.length;
+    unichar source[srclen];
+    [string getCharacters:source range:NSMakeRange(0, srclen)];
+
+    unichar result[srclen];
+    NSUInteger reslen = 0;
+
+    for (unichar *srcend = source + srclen, *psrc = source; psrc < srcend; ++psrc) {
+        unichar ch = *psrc;
+        if (ch == '\\') {
+            ++psrc;
+            if (psrc < srcend)
+                result[reslen++] = *psrc;
+        } else {
+            result[reslen++] = ch;
+        }
+    }
+
+    return [NSString stringWithCharacters:result length:reslen];
+}
+
+@end
+
+
 @implementation ATPathSpec
 
-+ (ATPathSpec *)pathSpecWithString:(NSString *)string {
++ (ATPathSpec *)pathSpecWithString:(NSString *)string syntaxOptions:(ATPathSpecSyntaxOptions)options {
     NSError *error;
-    ATPathSpec *result = [self pathSpecWithString:string error:&error];
+    ATPathSpec *result = [self pathSpecWithString:string syntaxOptions:options error:&error];
     if (!result) {
         NSAssert(NO, @"Error in [ATPathSpec pathSpecWithString:\"%@\"]: %@", string, error.localizedDescription);
         abort();
@@ -25,7 +188,7 @@ NSString *const ATPathSpecErrorSpecStringKey = @"ATPathSpecErrorSpecString";
     return result;
 }
 
-+ (ATPathSpec *)pathSpecWithString:(NSString *)string error:(NSError **)outError {
++ (ATPathSpec *)pathSpecWithString:(NSString *)string syntaxOptions:(ATPathSpecSyntaxOptions)options error:(NSError **)outError {
     static NSCharacterSet *special;
     static dispatch_once_t specialToken;
     dispatch_once(&specialToken, ^{
