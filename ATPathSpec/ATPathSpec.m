@@ -13,6 +13,7 @@ static NSString *ATPathSpecTokenTypeNames[] = {
     @"!",
     @";",
     @",",
+    @"_",
     @"|",
     @"&",
     @"(",
@@ -43,6 +44,8 @@ static NSString *ATPathSpecTokenTypeNames[] = {
         [specialCharacters addCharactersInString:@"\n"];
     if (options & ATPathSpecSyntaxOptionsAllowCommaList)
         [specialCharacters addCharactersInString:@","];
+    if (options & ATPathSpecSyntaxOptionsAllowWhitespaceList)
+        [specialCharacters formUnionWithCharacterSet:whitespaceCharacters];
     if (options & ATPathSpecSyntaxOptionsAllowPipeUnion)
         [specialCharacters addCharactersInString:@"|"];
     if (options & ATPathSpecSyntaxOptionsAllowAmpersandIntersection)
@@ -58,6 +61,9 @@ static NSString *ATPathSpecTokenTypeNames[] = {
     unichar buffer[len];
     [string getCharacters:buffer range:NSMakeRange(0, len)];
 
+    ATPathSpecTokenType lastTokenType = ATPathSpecTokenTypeNone;
+    ATPathSpecTokenType queuedTokenType = ATPathSpecTokenTypeNone;
+    NSRange queuedTokenRange;
     NSUInteger textTokenStart = 0;
     NSUInteger searchStart = textTokenStart;
     while (textTokenStart < len) {
@@ -79,7 +85,12 @@ static NSString *ATPathSpecTokenTypeNames[] = {
 
             // unary operators
             if (negationEnabled && buffer[textTokenStart] == '!') {
+                if (queuedTokenType != ATPathSpecTokenTypeNone) {
+                    block(queuedTokenType, queuedTokenRange, nil);
+                    queuedTokenType = ATPathSpecTokenTypeNone;
+                }
                 block(ATPathSpecTokenTypeNegation, NSMakeRange(textTokenStart, 1), nil);
+                lastTokenType = ATPathSpecTokenTypeNegation;
                 ++textTokenStart;
             } else {
                 break;
@@ -97,35 +108,84 @@ static NSString *ATPathSpecTokenTypeNames[] = {
             if (decodeTokens) {
                 textTokenString = [self decodeEscapesInString:[[string substringWithRange:textTokenRange] stringByTrimmingCharactersInSet:whitespaceCharacters]];
             }
+            if (queuedTokenType != ATPathSpecTokenTypeNone) {
+                block(queuedTokenType, queuedTokenRange, nil);
+                queuedTokenType = ATPathSpecTokenTypeNone;
+            }
             block(ATPathSpecTokenTypeMask, textTokenRange, textTokenString);
+            lastTokenType = ATPathSpecTokenTypeMask;
         }
 
         if (specialPos == NSNotFound)
             return;
 
-        if (buffer[specialPos] == '#') {
+        unichar special = buffer[specialPos];
+        if (special == '#') {
             // skip comment
             NSUInteger eol = [string rangeOfCharacterFromSet:newlineCharacters options:0 range:NSMakeRange(specialPos+1, len - (specialPos+1))].location;
             if (eol == NSNotFound) {
                 eol = len;
             } else {
-                block(ATPathSpecTokenTypeNewline, NSMakeRange(eol, 1), nil);
+                if (lastTokenType != ATPathSpecTokenTypeNone && queuedTokenType != ATPathSpecTokenTypeNewline) {
+                    queuedTokenType = ATPathSpecTokenTypeNewline;
+                    queuedTokenRange = NSMakeRange(eol, 1);
+                }
             }
             textTokenStart = searchStart = eol + 1;
-        } else {
-            ATPathSpecTokenType type;
-            switch (buffer[specialPos]) {
-                case '\n':  type = ATPathSpecTokenTypeNewline; break;
-                case ',':   type = ATPathSpecTokenTypeComma; break;
-                case '|':   type = ATPathSpecTokenTypeUnion; break;
-                case '&':   type = ATPathSpecTokenTypeIntersection; break;
-                case '(':   type = ATPathSpecTokenTypeOpenParen; break;
-                case ')':   type = ATPathSpecTokenTypeCloseParen; break;
-                default:    abort();
+        } else if ([whitespaceCharacters characterIsMember:special]) {
+            if (queuedTokenType != ATPathSpecTokenTypeNewline && queuedTokenType != ATPathSpecTokenTypeComma && queuedTokenType != ATPathSpecTokenTypeWhitespace && (lastTokenType == ATPathSpecTokenTypeMask || lastTokenType == ATPathSpecTokenTypeCloseParen) ) {
+                queuedTokenType = ATPathSpecTokenTypeWhitespace;
+                queuedTokenRange = NSMakeRange(specialPos, 1);
             }
-            block(type, NSMakeRange(specialPos, 1), nil);
 
+            // skip remaining whitespace
+            searchStart = specialPos + 1;
+            while (searchStart < len && [whitespaceCharacters characterIsMember:buffer[searchStart]])
+                ++searchStart;
+            textTokenStart = searchStart;
+        } else {
             textTokenStart = searchStart = specialPos + 1;
+
+            ATPathSpecTokenType type = ATPathSpecTokenTypeNone;
+            switch (special) {
+                case '\n':
+                    if (lastTokenType != ATPathSpecTokenTypeNone && queuedTokenType != ATPathSpecTokenTypeNewline) {
+                        queuedTokenType = ATPathSpecTokenTypeNewline;
+                        queuedTokenRange = NSMakeRange(specialPos, 1);
+                    }
+                    break;
+                case ',':
+                    if (queuedTokenType != ATPathSpecTokenTypeNewline && queuedTokenType != ATPathSpecTokenTypeComma) {
+                        queuedTokenType = ATPathSpecTokenTypeComma;
+                        queuedTokenRange = NSMakeRange(specialPos, 1);
+                    }
+                    break;
+                case '|':
+                    queuedTokenType = ATPathSpecTokenTypeNone;
+                    type = ATPathSpecTokenTypeUnion;
+                    break;
+                case '&':
+                    queuedTokenType = ATPathSpecTokenTypeNone;
+                    type = ATPathSpecTokenTypeIntersection;
+                    break;
+                case '(':
+                    type = ATPathSpecTokenTypeOpenParen;
+                    break;
+                case ')':
+                    queuedTokenType = ATPathSpecTokenTypeNone;
+                    type = ATPathSpecTokenTypeCloseParen;
+                    break;
+                default:
+                    abort();
+            }
+            if (type != ATPathSpecTokenTypeNone) {
+                if (queuedTokenType != ATPathSpecTokenTypeNone) {
+                    block(queuedTokenType, queuedTokenRange, nil);
+                    queuedTokenType = ATPathSpecTokenTypeNone;
+                }
+                block(type, NSMakeRange(specialPos, 1), nil);
+                lastTokenType = type;
+            }
         }
     }
 }

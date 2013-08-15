@@ -17,6 +17,7 @@ typedef enum {
     ATPathSpecSyntaxOptionsAllowBackslashEscape = 0x01,
     ATPathSpecSyntaxOptionsAllowNewlineList = 0x02,
     ATPathSpecSyntaxOptionsAllowCommaList = 0x04,
+    ATPathSpecSyntaxOptionsAllowWhitespaceList = 0x200,
     ATPathSpecSyntaxOptionsAllowPipeUnion = 0x08,
     ATPathSpecSyntaxOptionsAllowAmpersandIntersection = 0x10,
     ATPathSpecSyntaxOptionsAllowParen = 0x20,
@@ -27,7 +28,7 @@ typedef enum {
     ATPathSpecSyntaxOptionsPlainMask = 0,
     ATPathSpecSyntaxOptionsPlainList = ATPathSpecSyntaxOptionsAllowNewlineList,
     ATPathSpecSyntaxOptionsGitignore = ATPathSpecSyntaxOptionsAllowBackslashEscape | ATPathSpecSyntaxOptionsAllowNewlineList | ATPathSpecSyntaxOptionsAllowBangNegation | ATPathSpecSyntaxOptionsAllowHashComment,
-    ATPathSpecSyntaxOptionsExtended = ATPathSpecSyntaxOptionsAllowBackslashEscape | ATPathSpecSyntaxOptionsAllowNewlineList | ATPathSpecSyntaxOptionsAllowCommaList | ATPathSpecSyntaxOptionsAllowPipeUnion | ATPathSpecSyntaxOptionsAllowAmpersandIntersection | ATPathSpecSyntaxOptionsAllowParen | ATPathSpecSyntaxOptionsAllowBangNegation | ATPathSpecSyntaxOptionsAllowHashComment | ATPathSpecSyntaxOptionsRequireTrailingSlashForFolders,
+    ATPathSpecSyntaxOptionsExtended = ATPathSpecSyntaxOptionsAllowBackslashEscape | ATPathSpecSyntaxOptionsAllowNewlineList | ATPathSpecSyntaxOptionsAllowCommaList | ATPathSpecSyntaxOptionsAllowWhitespaceList | ATPathSpecSyntaxOptionsAllowPipeUnion | ATPathSpecSyntaxOptionsAllowAmpersandIntersection | ATPathSpecSyntaxOptionsAllowParen | ATPathSpecSyntaxOptionsAllowBangNegation | ATPathSpecSyntaxOptionsAllowHashComment | ATPathSpecSyntaxOptionsRequireTrailingSlashForFolders,
 } ATPathSpecSyntaxOptions;
 
 

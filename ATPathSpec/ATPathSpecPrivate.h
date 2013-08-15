@@ -6,10 +6,12 @@
 @interface ATPathSpec (ATPathSpecParsing)
 
 typedef enum {
-    ATPathSpecTokenTypeMask = 1,
+    ATPathSpecTokenTypeNone,
+    ATPathSpecTokenTypeMask,
     ATPathSpecTokenTypeNegation,
     ATPathSpecTokenTypeNewline,
     ATPathSpecTokenTypeComma,
+    ATPathSpecTokenTypeWhitespace,
     ATPathSpecTokenTypeUnion,
     ATPathSpecTokenTypeIntersection,
     ATPathSpecTokenTypeOpenParen,
