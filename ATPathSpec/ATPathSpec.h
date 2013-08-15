@@ -14,7 +14,18 @@ typedef enum {
 } ATPathSpecEntryType;
 
 
+NSString *const ATPathSpecErrorDomain;
+NSString *const ATPathSpecErrorSpecStringKey;
+
+typedef enum {
+    ATPathSpecErrorCodeInvalidSpecString = 1,
+} ATPathSpecErrorCode;
+
+
 @interface ATPathSpec : NSObject
+
++ (ATPathSpec *)pathSpecWithString:(NSString *)string;
++ (ATPathSpec *)pathSpecWithString:(NSString *)string error:(NSError **)error;
 
 + (ATPathSpec *)pathSpecMatchingNameSuffix:(NSString *)suffix type:(ATPathSpecEntryType)type;
 //+ (ATPathSpec *)pathSpecMatchingUnionOf:(NSArray *)specs;

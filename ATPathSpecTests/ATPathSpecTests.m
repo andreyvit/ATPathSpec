@@ -9,7 +9,7 @@
 @implementation ATPathSpecTests
 
 - (void)testExample {
-    ATPathSpec *spec = [ATPathSpec pathSpecMatchingNameSuffix:@".txt" type:ATPathSpecEntryTypeFile];
+    ATPathSpec *spec = [ATPathSpec pathSpecWithString:@"*.txt"];
     XCTAssertTrue( [spec matchesPath:@"README.txt" type:ATPathSpecEntryTypeFile], "");
     XCTAssertTrue(![spec matchesPath:@"README.html" type:ATPathSpecEntryTypeFile], "");
     XCTAssertTrue( [spec matchesPath:@"docs/README.txt" type:ATPathSpecEntryTypeFile], "");

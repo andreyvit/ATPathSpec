@@ -3,14 +3,67 @@
 #import "ATPathSpecPrivate.h"
 
 
-@interface ATPathSpec ()
+NSString *const ATPathSpecErrorDomain = @"ATPathSpecErrorDomain";
+NSString *const ATPathSpecErrorSpecStringKey = @"ATPathSpecErrorSpecString";
 
-//- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path;
 
-@end
+#define return_error(returnValue, outError, error)  do { \
+        if (outError) *outError = error; \
+        return nil; \
+    } while(0)
 
 
 @implementation ATPathSpec
+
++ (ATPathSpec *)pathSpecWithString:(NSString *)string {
+    NSError *error;
+    ATPathSpec *result = [self pathSpecWithString:string error:&error];
+    if (!result) {
+        NSAssert(NO, @"Error in [ATPathSpec pathSpecWithString:\"%@\"]: %@", string, error.localizedDescription);
+        abort();
+    }
+    return result;
+}
+
++ (ATPathSpec *)pathSpecWithString:(NSString *)originalString error:(NSError **)outError {
+    return [self pathSpecWithSingleMaskString:originalString error:outError];
+}
+
++ (ATPathSpec *)pathSpecWithSingleMaskString:(NSString *)originalString error:(NSError **)outError {
+    NSString *string = [originalString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSUInteger len = string.length;
+    if (len == 0)
+        return_error(nil, outError, ([NSError errorWithDomain:ATPathSpecErrorDomain code:ATPathSpecErrorCodeInvalidSpecString userInfo:@{ATPathSpecErrorSpecStringKey: originalString, NSLocalizedDescriptionKey:@"Empty path spec"}]));
+
+    ATPathSpecEntryType type = ATPathSpecEntryTypeFile;
+    if ([string characterAtIndex:len - 1] == '/') {
+        type = ATPathSpecEntryTypeFolder;
+        string = [string substringToIndex:len - 1];
+        --len;
+    }
+
+    static NSCharacterSet *wildcards;
+    static dispatch_once_t wildcardsToken;
+    dispatch_once(&wildcardsToken, ^{
+        wildcards = [NSCharacterSet characterSetWithCharactersInString:@"*"];
+    });
+
+    NSUInteger wildcardPos = [string rangeOfCharacterFromSet:wildcards].location;
+    if (wildcardPos == NSNotFound) {
+        // TODO: plain string
+    } else {
+        if (wildcardPos == 0) {
+            NSString *suffix = [string substringFromIndex:wildcardPos + 1];
+            NSUInteger secondWildcardPos = [suffix rangeOfCharacterFromSet:wildcards].location;
+            if (secondWildcardPos == NSNotFound) {
+                return [self pathSpecMatchingNameSuffix:[string substringFromIndex:1] type:type];
+            }
+        }
+        // TODO: complicated wildcard
+    }
+
+    return_error(nil, outError, ([NSError errorWithDomain:ATPathSpecErrorDomain code:ATPathSpecErrorCodeInvalidSpecString userInfo:@{ATPathSpecErrorSpecStringKey: originalString, NSLocalizedDescriptionKey:[NSString stringWithFormat:@"Invalid path spec syntax: %@", originalString]}]));
+}
 
 + (ATPathSpec *)pathSpecMatchingNameSuffix:(NSString *)suffix type:(ATPathSpecEntryType)type {
     return [[ATSuffixPathSpec alloc] initWithSuffix:suffix type:type];
