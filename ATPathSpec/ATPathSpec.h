@@ -47,6 +47,7 @@ typedef enum {
 
 + (ATPathSpec *)pathSpecMatchingNameSuffix:(NSString *)suffix type:(ATPathSpecEntryType)type;
 + (ATPathSpec *)pathSpecMatchingUnionOf:(NSArray *)specs;
++ (ATPathSpec *)pathSpecMatchingIntersectionOf:(NSArray *)specs;
 
 - (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type;
 - (BOOL)matchesPath:(NSString *)path type:(ATPathSpecEntryType)type;

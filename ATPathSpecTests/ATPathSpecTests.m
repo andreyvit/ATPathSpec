@@ -46,4 +46,12 @@
     XCTAssertTrue(![spec matchesPath:@"docs/README.doc" type:ATPathSpecEntryTypeFile], "");
 }
 
+- (void)testIntersection {
+    ATPathSpec *spec = [ATPathSpec pathSpecWithString:@"*.txt & *ME.txt" syntaxOptions:ATPathSpecSyntaxOptionsExtended];
+    XCTAssertTrue( [spec matchesPath:@"README.txt" type:ATPathSpecEntryTypeFile], "");
+    XCTAssertTrue(![spec matchesPath:@"README.doc" type:ATPathSpecEntryTypeFile], "");
+    XCTAssertTrue( [spec matchesPath:@"docs/README.txt" type:ATPathSpecEntryTypeFile], "");
+    XCTAssertTrue(![spec matchesPath:@"docs/README.doc" type:ATPathSpecEntryTypeFile], "");
+}
+
 @end

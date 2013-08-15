@@ -287,9 +287,11 @@ static NSString *ATPathSpecTokenTypeNames[] = {
                 abort();
             case ATPathSpecTokenTypeUnion:
                 return [ATPathSpec pathSpecMatchingUnionOf:specs];
+            case ATPathSpecTokenTypeIntersection:
+                return [ATPathSpec pathSpecMatchingIntersectionOf:specs];
             case ATPathSpecTokenTypeComma:
                 if (lastNegated)
-                    abort(); // TODO: intersection
+                    return [ATPathSpec pathSpecMatchingIntersectionOf:specs];
                 else
                     return [ATPathSpec pathSpecMatchingUnionOf:specs];
             default:
@@ -431,6 +433,10 @@ static NSString *ATPathSpecTokenTypeNames[] = {
     return [[ATUnionPathSpec alloc] initWithSpecs:specs];
 }
 
++ (ATPathSpec *)pathSpecMatchingIntersectionOf:(NSArray *)specs {
+    return [[ATIntersectionPathSpec alloc] initWithSpecs:specs];
+}
+
 //- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path {
 //    abort();
 //}
@@ -488,8 +494,33 @@ static NSString *ATPathSpecTokenTypeNames[] = {
         if (result == ATPathSpecMatchResultMatched)
             return ATPathSpecMatchResultMatched;
     }
-
     return ATPathSpecMatchResultUnknown;
+}
+
+@end
+
+
+#pragma mark -
+
+@implementation ATIntersectionPathSpec
+
+@synthesize specs = _specs;
+
+- (id)initWithSpecs:(NSArray *)specs {
+    self = [super init];
+    if (self) {
+        _specs = [specs copy];
+    }
+    return self;
+}
+
+- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type {
+    for (ATPathSpec *spec in _specs) {
+        ATPathSpecMatchResult result = [spec matchResultForPath:path type:type];
+        if (result != ATPathSpecMatchResultMatched)
+            return ATPathSpecMatchResultUnknown;
+    }
+    return ATPathSpecMatchResultMatched;
 }
 
 @end

@@ -49,3 +49,12 @@ typedef void (^ATPathSpecTokenBlock)(ATPathSpecTokenType type, NSRange range, NS
 @property(nonatomic, readonly) NSArray *specs;
 
 @end
+
+
+@interface ATIntersectionPathSpec : ATPathSpec
+
+- (id)initWithSpecs:(NSArray *)specs;
+
+@property(nonatomic, readonly) NSArray *specs;
+
+@end
