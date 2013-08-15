@@ -15,9 +15,9 @@ typedef enum {
 
 typedef enum {
     ATPathSpecSyntaxOptionsAllowBackslashEscape = 0x01,
-    ATPathSpecSyntaxOptionsAllowNewlineList = 0x02,
-    ATPathSpecSyntaxOptionsAllowCommaList = 0x04,
-    ATPathSpecSyntaxOptionsAllowWhitespaceList = 0x200,
+    ATPathSpecSyntaxOptionsAllowNewlineSeparator = 0x02,
+    ATPathSpecSyntaxOptionsAllowCommaSeparator = 0x04,
+    ATPathSpecSyntaxOptionsAllowWhitespaceSeparator = 0x200,
     ATPathSpecSyntaxOptionsAllowPipeUnion = 0x08,
     ATPathSpecSyntaxOptionsAllowAmpersandIntersection = 0x10,
     ATPathSpecSyntaxOptionsAllowParen = 0x20,
@@ -26,9 +26,9 @@ typedef enum {
     ATPathSpecSyntaxOptionsRequireTrailingSlashForFolders = 0x100,
 
     ATPathSpecSyntaxOptionsPlainMask = 0,
-    ATPathSpecSyntaxOptionsPlainList = ATPathSpecSyntaxOptionsAllowNewlineList,
-    ATPathSpecSyntaxOptionsGitignore = ATPathSpecSyntaxOptionsAllowBackslashEscape | ATPathSpecSyntaxOptionsAllowNewlineList | ATPathSpecSyntaxOptionsAllowBangNegation | ATPathSpecSyntaxOptionsAllowHashComment,
-    ATPathSpecSyntaxOptionsExtended = ATPathSpecSyntaxOptionsAllowBackslashEscape | ATPathSpecSyntaxOptionsAllowNewlineList | ATPathSpecSyntaxOptionsAllowCommaList | ATPathSpecSyntaxOptionsAllowWhitespaceList | ATPathSpecSyntaxOptionsAllowPipeUnion | ATPathSpecSyntaxOptionsAllowAmpersandIntersection | ATPathSpecSyntaxOptionsAllowParen | ATPathSpecSyntaxOptionsAllowBangNegation | ATPathSpecSyntaxOptionsAllowHashComment | ATPathSpecSyntaxOptionsRequireTrailingSlashForFolders,
+    ATPathSpecSyntaxOptionsPlainList = ATPathSpecSyntaxOptionsAllowNewlineSeparator,
+    ATPathSpecSyntaxOptionsGitignore = ATPathSpecSyntaxOptionsAllowBackslashEscape | ATPathSpecSyntaxOptionsAllowNewlineSeparator | ATPathSpecSyntaxOptionsAllowBangNegation | ATPathSpecSyntaxOptionsAllowHashComment,
+    ATPathSpecSyntaxOptionsExtended = ATPathSpecSyntaxOptionsAllowBackslashEscape | ATPathSpecSyntaxOptionsAllowNewlineSeparator | ATPathSpecSyntaxOptionsAllowCommaSeparator | ATPathSpecSyntaxOptionsAllowWhitespaceSeparator | ATPathSpecSyntaxOptionsAllowPipeUnion | ATPathSpecSyntaxOptionsAllowAmpersandIntersection | ATPathSpecSyntaxOptionsAllowParen | ATPathSpecSyntaxOptionsAllowBangNegation | ATPathSpecSyntaxOptionsAllowHashComment | ATPathSpecSyntaxOptionsRequireTrailingSlashForFolders,
 } ATPathSpecSyntaxOptions;
 
 

@@ -40,11 +40,11 @@ static NSString *ATPathSpecTokenTypeNames[] = {
 
     NSMutableCharacterSet *specialCharacters = [NSMutableCharacterSet new];
     [specialCharacters formUnionWithCharacterSet:escapeCharacters];
-    if (options & ATPathSpecSyntaxOptionsAllowNewlineList)
+    if (options & ATPathSpecSyntaxOptionsAllowNewlineSeparator)
         [specialCharacters addCharactersInString:@"\n"];
-    if (options & ATPathSpecSyntaxOptionsAllowCommaList)
+    if (options & ATPathSpecSyntaxOptionsAllowCommaSeparator)
         [specialCharacters addCharactersInString:@","];
-    if (options & ATPathSpecSyntaxOptionsAllowWhitespaceList)
+    if (options & ATPathSpecSyntaxOptionsAllowWhitespaceSeparator)
         [specialCharacters formUnionWithCharacterSet:whitespaceCharacters];
     if (options & ATPathSpecSyntaxOptionsAllowPipeUnion)
         [specialCharacters addCharactersInString:@"|"];
