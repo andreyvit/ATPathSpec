@@ -23,6 +23,11 @@
     XCTAssertEqualObjects(actual, @"Mask(*.txt) _ Mask(*.html)", "");
 }
 
+- (void)testEscapedWhitespace {
+    NSString *actual = [ATPathSpec describeTokensInString:@"*.txt\\ *.html" withSyntaxOptions:ATPathSpecSyntaxOptionsExtended];
+    XCTAssertEqualObjects(actual, @"Mask(*.txt *.html)", "");
+}
+
 - (void)testNewline {
     NSString *actual = [ATPathSpec describeTokensInString:@"*.txt\n*.html" withSyntaxOptions:ATPathSpecSyntaxOptionsExtended];
     XCTAssertEqualObjects(actual, @"Mask(*.txt) ; Mask(*.html)", "");
@@ -43,6 +48,10 @@
 - (void)testMidLineComment {
     NSString *actual = [ATPathSpec describeTokensInString:@"*.txt #, *.doc\n*.html" withSyntaxOptions:ATPathSpecSyntaxOptionsExtended];
     XCTAssertEqualObjects(actual, @"Mask(*.txt) ; Mask(*.html)", "");
+}
+- (void)testEscapedMidlineComment {
+    NSString *actual = [ATPathSpec describeTokensInString:@"*.txt\\#, *.doc\n*.html" withSyntaxOptions:ATPathSpecSyntaxOptionsExtended];
+    XCTAssertEqualObjects(actual, @"Mask(*.txt#) , Mask(*.doc) ; Mask(*.html)", "");
 }
 
 - (void)testNegationOfSingleMask {
