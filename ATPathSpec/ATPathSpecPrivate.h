@@ -10,3 +10,12 @@
 @property(nonatomic, readonly) ATPathSpecEntryType type;
 
 @end
+
+
+@interface ATUnionPathSpec : ATPathSpec
+
+- (id)initWithSpecs:(NSArray *)specs;
+
+@property(nonatomic, readonly) NSArray *specs;
+
+@end

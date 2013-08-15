@@ -25,8 +25,31 @@ NSString *const ATPathSpecErrorSpecStringKey = @"ATPathSpecErrorSpecString";
     return result;
 }
 
-+ (ATPathSpec *)pathSpecWithString:(NSString *)originalString error:(NSError **)outError {
-    return [self pathSpecWithSingleMaskString:originalString error:outError];
++ (ATPathSpec *)pathSpecWithString:(NSString *)string error:(NSError **)outError {
+    static NSCharacterSet *special;
+    static dispatch_once_t specialToken;
+    dispatch_once(&specialToken, ^{
+        special = [NSCharacterSet characterSetWithCharactersInString:@",\n"];
+    });
+
+    NSRange range = [string rangeOfCharacterFromSet:special];
+    if (range.location == NSNotFound) {
+        return [self pathSpecWithSingleMaskString:string error:outError];
+    } else {
+        NSMutableArray *specs = [NSMutableArray new];
+        for (NSString *component in [string componentsSeparatedByCharactersInSet:special]) {
+            NSString *trimmed = [component stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            if (trimmed.length == 0)
+                continue;
+
+            ATPathSpec *spec = [self pathSpecWithSingleMaskString:trimmed error:outError];
+            if (!spec)
+                return nil;
+            [specs addObject:spec];
+        }
+
+        return [self pathSpecMatchingUnionOf:specs];
+    }
 }
 
 + (ATPathSpec *)pathSpecWithSingleMaskString:(NSString *)originalString error:(NSError **)outError {
@@ -77,10 +100,10 @@ NSString *const ATPathSpecErrorSpecStringKey = @"ATPathSpecErrorSpecString";
     abort();
 }
 
-//+ (ATPathSpec *)pathSpecMatchingUnionOf:(NSArray *)specs {
-//    abort();
-//}
-//
++ (ATPathSpec *)pathSpecMatchingUnionOf:(NSArray *)specs {
+    return [[ATUnionPathSpec alloc] initWithSpecs:specs];
+}
+
 //- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path {
 //    abort();
 //}
@@ -117,6 +140,32 @@ NSString *const ATPathSpecErrorSpecStringKey = @"ATPathSpecErrorSpecString";
 
 @end
 
+
+#pragma mark -
+
+@implementation ATUnionPathSpec
+
+@synthesize specs = _specs;
+
+- (id)initWithSpecs:(NSArray *)specs {
+    self = [super init];
+    if (self) {
+        _specs = [specs copy];
+    }
+    return self;
+}
+
+- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type {
+    for (ATPathSpec *spec in _specs) {
+        ATPathSpecMatchResult result = [spec matchResultForPath:path type:type];
+        if (result == ATPathSpecMatchResultMatched)
+            return ATPathSpecMatchResultMatched;
+    }
+
+    return ATPathSpecMatchResultUnknown;
+}
+
+@end
 
 
 
