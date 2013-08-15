@@ -249,30 +249,134 @@ static NSString *ATPathSpecTokenTypeNames[] = {
 }
 
 + (ATPathSpec *)pathSpecWithString:(NSString *)string syntaxOptions:(ATPathSpecSyntaxOptions)options error:(NSError **)outError {
-    static NSCharacterSet *special;
-    static dispatch_once_t specialToken;
-    dispatch_once(&specialToken, ^{
-        special = [NSCharacterSet characterSetWithCharactersInString:@",\n"];
-    });
+    NSMutableArray *contexts = [NSMutableArray new];
+    __block NSMutableArray *specs = [NSMutableArray new];
+    __block ATPathSpecTokenType op = ATPathSpecTokenTypeNone;
+    __block BOOL nextNegated = NO;
+    __block BOOL lastNegated = NO;
 
-    NSRange range = [string rangeOfCharacterFromSet:special];
-    if (range.location == NSNotFound) {
-        return [self pathSpecWithSingleMaskString:string error:outError];
-    } else {
-        NSMutableArray *specs = [NSMutableArray new];
-        for (NSString *component in [string componentsSeparatedByCharactersInSet:special]) {
-            NSString *trimmed = [component stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            if (trimmed.length == 0)
-                continue;
+    __block BOOL failed = NO;
 
-            ATPathSpec *spec = [self pathSpecWithSingleMaskString:trimmed error:outError];
-            if (!spec)
-                return nil;
-            [specs addObject:spec];
+    void (^addSpec)(ATPathSpec *spec) = ^(ATPathSpec *spec){
+        lastNegated = nextNegated;
+        if (nextNegated) {
+            // TODO: negate
         }
+        [specs addObject:spec];
+        nextNegated = NO;
+    };
 
-        return [self pathSpecMatchingUnionOf:specs];
+    void (^initContext)() = ^{
+        specs = [NSMutableArray new];
+        op = ATPathSpecTokenTypeNone;
+        lastNegated = nextNegated = NO;
+    };
+
+    ATPathSpec *(^flushContext)() = ^ATPathSpec *{
+        if (specs.count == 0) {
+            if (outError)
+                *outError = nil;
+            return nil;
+        }
+        if (specs.count == 1) {
+            return [specs firstObject];
+        }
+        switch (op) {
+            case ATPathSpecTokenTypeNone:
+                NSAssert(specs.count <= 1, @"Multiple specs cannot be added without an operator");
+                abort();
+            case ATPathSpecTokenTypeUnion:
+                return [ATPathSpec pathSpecMatchingUnionOf:specs];
+            case ATPathSpecTokenTypeComma:
+                if (lastNegated)
+                    abort(); // TODO: intersection
+                else
+                    return [ATPathSpec pathSpecMatchingUnionOf:specs];
+            default:
+                abort();
+        }
+    };
+
+    void (^pushContext)() = ^{
+        [contexts addObject:@{@"specs": specs, @"op": @(op), @"nextNegated": @(nextNegated), @"lastNegated": @(lastNegated)}];
+        initContext();
+    };
+
+    void (^popContext)() = ^{
+        ATPathSpec *spec = flushContext();
+
+        NSDictionary *c = [contexts lastObject];
+        [contexts removeLastObject];
+
+        specs = c[@"specs"];
+        op = [c[@"op"] unsignedIntValue];
+        nextNegated = [c[@"nextNegated"] boolValue];
+        lastNegated = [c[@"lastNegated"] boolValue];
+
+        addSpec(spec);
+    };
+
+    [ATPathSpec enumerateTokensInString:string withSyntaxOptions:options usingBlock:^(ATPathSpecTokenType type, NSRange range, NSString *decoded) {
+        if (failed)
+            return;
+        if (type == ATPathSpecTokenTypeMask) {
+            ATPathSpec *spec = [self pathSpecWithSingleMaskString:decoded error:outError];
+            if (!spec) {
+                failed = YES;
+                return;
+            }
+            addSpec(spec);
+        } else if (type == ATPathSpecTokenTypeWhitespace || type == ATPathSpecTokenTypeComma || type == ATPathSpecTokenTypeNewline) {
+            if (op != ATPathSpecTokenTypeNone && op != ATPathSpecTokenTypeComma) {
+                if (outError)
+                    *outError = [NSError errorWithDomain:ATPathSpecErrorDomain code:ATPathSpecErrorCodeInvalidSpecString userInfo:@{ATPathSpecErrorSpecStringKey: string, NSLocalizedDescriptionKey:[NSString stringWithFormat:@"Cannot mix different operators without parens: '%@'", string]}];
+                failed = YES;
+                return;
+            }
+            op = ATPathSpecTokenTypeComma;
+        } else if (type == ATPathSpecTokenTypeNegation) {
+            nextNegated = !nextNegated;
+        } else if (type == ATPathSpecTokenTypeUnion) {
+            if (op != ATPathSpecTokenTypeNone && op != ATPathSpecTokenTypeUnion) {
+                if (outError)
+                    *outError = [NSError errorWithDomain:ATPathSpecErrorDomain code:ATPathSpecErrorCodeInvalidSpecString userInfo:@{ATPathSpecErrorSpecStringKey: string, NSLocalizedDescriptionKey:[NSString stringWithFormat:@"Cannot mix different operators without parens: '%@'", string]}];
+                failed = YES;
+                return;
+            }
+            op = ATPathSpecTokenTypeUnion;
+        } else if (type == ATPathSpecTokenTypeIntersection) {
+            if (op != ATPathSpecTokenTypeNone && op != ATPathSpecTokenTypeIntersection) {
+                if (outError)
+                    *outError = [NSError errorWithDomain:ATPathSpecErrorDomain code:ATPathSpecErrorCodeInvalidSpecString userInfo:@{ATPathSpecErrorSpecStringKey: string, NSLocalizedDescriptionKey:[NSString stringWithFormat:@"Cannot mix different operators without parens: '%@'", string]}];
+                failed = YES;
+                return;
+            }
+            op = ATPathSpecTokenTypeIntersection;
+        } else if (type == ATPathSpecTokenTypeOpenParen) {
+            pushContext();
+        } else if (type == ATPathSpecTokenTypeCloseParen) {
+            if (contexts.count == 0) {
+                if (outError)
+                    *outError = [NSError errorWithDomain:ATPathSpecErrorDomain code:ATPathSpecErrorCodeInvalidSpecString userInfo:@{ATPathSpecErrorSpecStringKey: string, NSLocalizedDescriptionKey:[NSString stringWithFormat:@"Unmatched close paren: '%@'", string]}];
+                failed = YES;
+                return;
+            }
+            popContext();
+        } else {
+            abort();
+        }
+    } decodeTokens:YES];
+
+    if (contexts.count > 0) {
+        if (outError)
+            *outError = [NSError errorWithDomain:ATPathSpecErrorDomain code:ATPathSpecErrorCodeInvalidSpecString userInfo:@{ATPathSpecErrorSpecStringKey: string, NSLocalizedDescriptionKey:[NSString stringWithFormat:@"Unmatched open paren: '%@'", string]}];
+        failed = YES;
     }
+
+    if (failed)
+        return nil;
+
+    return flushContext();
 }
 
 + (ATPathSpec *)pathSpecWithSingleMaskString:(NSString *)originalString error:(NSError **)outError {
