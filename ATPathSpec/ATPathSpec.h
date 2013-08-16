@@ -51,6 +51,8 @@ typedef enum {
 + (ATPathSpec *)pathSpecMatchingUnionOf:(NSArray *)specs;
 + (ATPathSpec *)pathSpecMatchingIntersectionOf:(NSArray *)specs;
 
+- (ATPathSpec *)negatedPathSpec;
+
 - (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type;
 - (BOOL)matchesPath:(NSString *)path type:(ATPathSpecEntryType)type;
 

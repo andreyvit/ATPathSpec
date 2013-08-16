@@ -352,7 +352,7 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
     void (^addSpec)(ATPathSpec *spec) = ^(ATPathSpec *spec){
         lastNegated = nextNegated;
         if (nextNegated) {
-            // TODO: negate
+            spec = [spec negatedPathSpec];
         }
         [specs addObject:spec];
         nextNegated = NO;
@@ -527,6 +527,10 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
     abort();
 }
 
+- (ATPathSpec *)negatedPathSpec {
+    return [[ATNegatedPathSpec alloc] initWithSpec:self];
+}
+
 + (ATPathSpec *)pathSpecMatchingUnionOf:(NSArray *)specs {
     return [[ATUnionPathSpec alloc] initWithSpecs:specs];
 }
@@ -652,6 +656,39 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
 
 - (BOOL)isComplexExpression {
     return NO;
+}
+
+@end
+
+
+#pragma mark -
+
+@implementation ATNegatedPathSpec
+
+@synthesize spec = _spec;
+
+- (id)initWithSpec:(ATPathSpec *)spec {
+    self = [super init];
+    if (self) {
+        _spec = spec;
+    }
+    return self;
+}
+
+- (ATPathSpec *)negatedPathSpec {
+    return _spec;
+}
+
+- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type {
+    return [_spec matchResultForPath:path type:type] != ATPathSpecMatchResultMatched;
+}
+
+- (BOOL)isComplexExpression {
+    return NO;
+}
+
+- (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options {
+    return [@"!" stringByAppendingString:[_spec parenthesizedStringRepresentationWithSyntaxOptions:options]];
 }
 
 @end

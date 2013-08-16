@@ -33,7 +33,7 @@ typedef void (^ATPathSpecTokenBlock)(ATPathSpecTokenType type, NSRange range, NS
 
 + (NSString *)describeTokensInString:(NSString *)string withSyntaxOptions:(ATPathSpecSyntaxOptions)options;  // for tests and debugging
 
-@property(nonatomic, readonly) BOOL complexExpression;
+- (BOOL)isComplexExpression;
 
 - (NSString *)parenthesizedStringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options;
 
@@ -66,6 +66,15 @@ typedef void (^ATPathSpecTokenBlock)(ATPathSpecTokenType type, NSRange range, NS
 
 @property(nonatomic, readonly) NSString *pattern;
 @property(nonatomic, readonly) ATPathSpecEntryType type;
+
+@end
+
+
+@interface ATNegatedPathSpec : ATPathSpec
+
+- (id)initWithSpec:(ATPathSpec *)spec;
+
+@property(nonatomic, readonly) ATPathSpec *spec;
 
 @end
 
