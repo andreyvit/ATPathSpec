@@ -11,7 +11,7 @@
 		4398656B17BCBF1E00EC6471 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4398656A17BCBF1E00EC6471 /* main.m */; };
 		4398657B17BCBF6C00EC6471 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4398657A17BCBF6C00EC6471 /* XCTest.framework */; };
 		4398658117BCBF6C00EC6471 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4398657F17BCBF6C00EC6471 /* InfoPlist.strings */; };
-		4398658317BCBF6C00EC6471 /* ATPathSpecTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4398658217BCBF6C00EC6471 /* ATPathSpecTests.m */; };
+		4398658317BCBF6C00EC6471 /* ATPathSpecSingleComponentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4398658217BCBF6C00EC6471 /* ATPathSpecSingleComponentTests.m */; };
 		4398658D17BCCAF700EC6471 /* ATPathSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 4398658C17BCCAF700EC6471 /* ATPathSpec.m */; };
 		4398658E17BCCAF700EC6471 /* ATPathSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 4398658C17BCCAF700EC6471 /* ATPathSpec.m */; };
 		4398659117BCF12900EC6471 /* ATPathSpecTokenizerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4398659017BCF12900EC6471 /* ATPathSpecTokenizerTests.m */; };
@@ -52,7 +52,7 @@
 		4398657A17BCBF6C00EC6471 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		4398657E17BCBF6C00EC6471 /* ATPathSpecTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ATPathSpecTests-Info.plist"; sourceTree = "<group>"; };
 		4398658017BCBF6C00EC6471 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		4398658217BCBF6C00EC6471 /* ATPathSpecTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ATPathSpecTests.m; sourceTree = "<group>"; };
+		4398658217BCBF6C00EC6471 /* ATPathSpecSingleComponentTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ATPathSpecSingleComponentTests.m; sourceTree = "<group>"; };
 		4398658417BCBF6C00EC6471 /* ATPathSpecTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ATPathSpecTests-Prefix.pch"; sourceTree = "<group>"; };
 		4398658B17BCCAF700EC6471 /* ATPathSpec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATPathSpec.h; sourceTree = "<group>"; };
 		4398658C17BCCAF700EC6471 /* ATPathSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATPathSpec.m; sourceTree = "<group>"; };
@@ -138,7 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				4398659017BCF12900EC6471 /* ATPathSpecTokenizerTests.m */,
-				4398658217BCBF6C00EC6471 /* ATPathSpecTests.m */,
+				4398658217BCBF6C00EC6471 /* ATPathSpecSingleComponentTests.m */,
 				4398657D17BCBF6C00EC6471 /* Supporting Files */,
 			);
 			path = ATPathSpecTests;
@@ -263,7 +263,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4398658E17BCCAF700EC6471 /* ATPathSpec.m in Sources */,
-				4398658317BCBF6C00EC6471 /* ATPathSpecTests.m in Sources */,
+				4398658317BCBF6C00EC6471 /* ATPathSpecSingleComponentTests.m in Sources */,
 				4398659517BDDF1C00EC6471 /* RegexKitLite.m in Sources */,
 				4398659117BCF12900EC6471 /* ATPathSpecTokenizerTests.m in Sources */,
 			);

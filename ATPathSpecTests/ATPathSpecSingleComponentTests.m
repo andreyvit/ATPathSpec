@@ -3,10 +3,10 @@
 #import "ATPathSpec.h"
 
 
-@interface ATPathSpecTests : XCTestCase
+@interface ATPathSpecSingleComponentTests : XCTestCase
 @end
 
-@implementation ATPathSpecTests
+@implementation ATPathSpecSingleComponentTests
 
 - (void)testEmpty1 {
     ATPathSpec *spec = [ATPathSpec emptyPathSpec];
