@@ -11,14 +11,6 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
 
 #pragma mark -
 
-@interface ATMask : NSObject
-
-- (BOOL)matchesName:(NSString *)name;
-
-- (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options;
-
-@end
-
 
 @interface ATLiteralMask : ATMask
 

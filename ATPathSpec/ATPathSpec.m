@@ -143,6 +143,27 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
 
 @implementation ATMask
 
++ (ATMask *)maskWithString:(NSString *)string syntaxOptions:(ATPathSpecSyntaxOptions)options {
+    static NSCharacterSet *wildcards;
+    static dispatch_once_t wildcardsToken;
+    dispatch_once(&wildcardsToken, ^{
+        wildcards = [NSCharacterSet characterSetWithCharactersInString:@"*?"];
+    });
+
+    NSUInteger wildcardPos = [string rangeOfCharacterFromSet:wildcards].location;
+    if (wildcardPos == NSNotFound) {
+        return [[ATLiteralMask alloc] initWithName:string];
+    } else {
+        if (wildcardPos == 0 && [string characterAtIndex:0] == '*') {
+            NSString *suffix = [string substringFromIndex:1];
+            if ([suffix rangeOfCharacterFromSet:wildcards].location == NSNotFound) {
+                return [[ATSuffixMask alloc] initWithSuffix:suffix];
+            }
+        }
+        return [[ATPatternMask alloc] initWithPattern:string];
+    }
+}
+
 - (BOOL)matchesName:(NSString *)name {
     abort();
 }
@@ -518,7 +539,7 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
         if (failed)
             return;
         if (type == ATPathSpecTokenTypeMask) {
-            ATPathSpec *spec = [self pathSpecWithSingleMaskString:decoded error:outError];
+            ATPathSpec *spec = [self pathSpecWithSingleMaskString:decoded syntaxOptions:options error:outError];
             if (!spec) {
                 failed = YES;
                 return;
@@ -577,7 +598,7 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
     return flushContext();
 }
 
-+ (ATPathSpec *)pathSpecWithSingleMaskString:(NSString *)originalString error:(NSError **)outError {
++ (ATPathSpec *)pathSpecWithSingleMaskString:(NSString *)originalString syntaxOptions:(ATPathSpecSyntaxOptions)options error:(NSError **)outError {
     NSString *string = originalString;
     NSUInteger len = string.length;
     if (len == 0)
@@ -590,37 +611,12 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
         --len;
     }
 
-    static NSCharacterSet *wildcards;
-    static dispatch_once_t wildcardsToken;
-    dispatch_once(&wildcardsToken, ^{
-        wildcards = [NSCharacterSet characterSetWithCharactersInString:@"*"];
-    });
-
-    NSUInteger wildcardPos = [string rangeOfCharacterFromSet:wildcards].location;
-    if (wildcardPos == NSNotFound) {
-        return [self pathSpecMatchingName:string type:type];
-    } else {
-        if (wildcardPos == 0) {
-            NSString *suffix = [string substringFromIndex:wildcardPos + 1];
-            NSUInteger secondWildcardPos = [suffix rangeOfCharacterFromSet:wildcards].location;
-            if (secondWildcardPos == NSNotFound) {
-                return [self pathSpecMatchingNameSuffix:[string substringFromIndex:1] type:type];
-            }
-        }
-        return [self pathSpecMatchingNamePattern:string type:type];
-    }
-
-    return_error(nil, outError, ([NSError errorWithDomain:ATPathSpecErrorDomain code:ATPathSpecErrorCodeInvalidSpecString userInfo:@{ATPathSpecErrorSpecStringKey: originalString, NSLocalizedDescriptionKey:[NSString stringWithFormat:@"Invalid path spec syntax: %@", originalString]}]));
+    ATMask *mask = [ATMask maskWithString:string syntaxOptions:options];
+    return [self pathSpecMatchingMask:mask type:type];
 }
 
-+ (ATPathSpec *)pathSpecMatchingName:(NSString *)name type:(ATPathSpecEntryType)type {
-    return [[ATSimplePathSpec alloc] initWithMask:[[ATLiteralMask alloc] initWithName:name] type:type];
-}
-+ (ATPathSpec *)pathSpecMatchingNameSuffix:(NSString *)suffix type:(ATPathSpecEntryType)type {
-    return [[ATSimplePathSpec alloc] initWithMask:[[ATSuffixMask alloc] initWithSuffix:suffix] type:type];
-}
-+ (ATPathSpec *)pathSpecMatchingNamePattern:(NSString *)pattern type:(ATPathSpecEntryType)type {
-    return [[ATSimplePathSpec alloc] initWithMask:[[ATPatternMask alloc] initWithPattern:pattern] type:type];
++ (ATPathSpec *)pathSpecMatchingMask:(ATMask *)mask type:(ATPathSpecEntryType)type {
+    return [[ATSimplePathSpec alloc] initWithMask:mask type:type];
 }
 
 - (BOOL)matchesPath:(NSString *)path type:(ATPathSpecEntryType)type {
@@ -642,10 +638,6 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
 + (ATPathSpec *)pathSpecMatchingIntersectionOf:(NSArray *)specs {
     return [[ATIntersectionPathSpec alloc] initWithSpecs:specs];
 }
-
-//- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path {
-//    abort();
-//}
 
 - (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options {
     abort();

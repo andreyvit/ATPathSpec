@@ -40,14 +40,23 @@ typedef enum {
 } ATPathSpecErrorCode;
 
 
+@interface ATMask : NSObject
+
++ (ATMask *)maskWithString:(NSString *)string syntaxOptions:(ATPathSpecSyntaxOptions)options;
+
+- (BOOL)matchesName:(NSString *)name;
+
+- (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options;
+
+@end
+
+
 @interface ATPathSpec : NSObject
 
 + (ATPathSpec *)pathSpecWithString:(NSString *)string syntaxOptions:(ATPathSpecSyntaxOptions)options;
 + (ATPathSpec *)pathSpecWithString:(NSString *)string syntaxOptions:(ATPathSpecSyntaxOptions)options error:(NSError **)error;
 
-+ (ATPathSpec *)pathSpecMatchingName:(NSString *)name type:(ATPathSpecEntryType)type;
-+ (ATPathSpec *)pathSpecMatchingNameSuffix:(NSString *)suffix type:(ATPathSpecEntryType)type;
-+ (ATPathSpec *)pathSpecMatchingNamePattern:(NSString *)pattern type:(ATPathSpecEntryType)type;
++ (ATPathSpec *)pathSpecMatchingMask:(ATMask *)mask type:(ATPathSpecEntryType)type;
 + (ATPathSpec *)pathSpecMatchingUnionOf:(NSArray *)specs;
 + (ATPathSpec *)pathSpecMatchingIntersectionOf:(NSArray *)specs;
 
