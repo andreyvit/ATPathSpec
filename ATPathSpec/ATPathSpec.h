@@ -45,11 +45,16 @@ typedef enum {
 + (ATPathSpec *)pathSpecWithString:(NSString *)string syntaxOptions:(ATPathSpecSyntaxOptions)options;
 + (ATPathSpec *)pathSpecWithString:(NSString *)string syntaxOptions:(ATPathSpecSyntaxOptions)options error:(NSError **)error;
 
++ (ATPathSpec *)pathSpecMatchingName:(NSString *)name type:(ATPathSpecEntryType)type;
 + (ATPathSpec *)pathSpecMatchingNameSuffix:(NSString *)suffix type:(ATPathSpecEntryType)type;
++ (ATPathSpec *)pathSpecMatchingNamePattern:(NSString *)pattern type:(ATPathSpecEntryType)type;
 + (ATPathSpec *)pathSpecMatchingUnionOf:(NSArray *)specs;
 + (ATPathSpec *)pathSpecMatchingIntersectionOf:(NSArray *)specs;
 
 - (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type;
 - (BOOL)matchesPath:(NSString *)path type:(ATPathSpecEntryType)type;
+
+- (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options;
+- (NSString *)description; // gives a string representation in Extended syntax
 
 @end

@@ -1,6 +1,7 @@
 
 #import "ATPathSpec.h"
 #import "ATPathSpecPrivate.h"
+#import "RegexKitLite.h"
 
 
 NSString *const ATPathSpecErrorDomain = @"ATPathSpecErrorDomain";
@@ -27,8 +28,119 @@ static NSString *ATPathSpecTokenTypeNames[] = {
     } while(0)
 
 
+NSString *ATPathSpec_Unescape(NSString *string) {
+    static NSCharacterSet *escapes;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        escapes = [NSCharacterSet characterSetWithCharactersInString:@"\\"];
+    });
 
-@implementation ATPathSpec (ATPathSpecParsing)
+    NSRange range = [string rangeOfCharacterFromSet:escapes];
+    if (range.location == NSNotFound)
+        return string;
+
+    NSUInteger srclen = string.length;
+    unichar source[srclen];
+    [string getCharacters:source range:NSMakeRange(0, srclen)];
+
+    unichar result[srclen];
+    NSUInteger reslen = 0;
+
+    for (unichar *srcend = source + srclen, *psrc = source; psrc < srcend; ++psrc) {
+        unichar ch = *psrc;
+        if (ch == '\\') {
+            ++psrc;
+            if (psrc < srcend)
+                result[reslen++] = *psrc;
+        } else {
+            result[reslen++] = ch;
+        }
+    }
+
+    return [NSString stringWithCharacters:result length:reslen];
+}
+
+NSString *ATPathSpec_Escape(NSString *string, NSCharacterSet *characterSet) {
+    NSRange range = [string rangeOfCharacterFromSet:characterSet];
+    if (range.location == NSNotFound)
+        return string;
+
+    NSUInteger srclen = string.length;
+    unichar source[srclen];
+    [string getCharacters:source range:NSMakeRange(0, srclen)];
+
+    unichar result[srclen * 2];
+    NSUInteger reslen = 0;
+
+    for (unichar *srcend = source + srclen, *psrc = source; psrc < srcend; ++psrc) {
+        unichar ch = *psrc;
+        if ([characterSet characterIsMember:ch]) {
+            result[reslen++] = '\\';
+        }
+        result[reslen++] = ch;
+    }
+
+    return [NSString stringWithCharacters:result length:reslen];
+}
+
+NSString *ATPathSpec_StringByEscapingRegex(NSString *regex) {
+    return [regex stringByReplacingOccurrencesOfRegex:@"([\\\\.^$\\[|*+?\\{])" withString:@"\\\\$1"];
+}
+
+NSString *ATPathSpec_RegexFromPatternString(NSString *pattern) {
+    pattern = [pattern stringByReplacingOccurrencesOfString:@"*" withString:@"_@,STAR,@_"];
+    pattern = [pattern stringByReplacingOccurrencesOfString:@"?" withString:@"_@,DOT,@_"];
+    NSString *regex = ATPathSpec_StringByEscapingRegex(pattern);
+    regex = [regex stringByReplacingOccurrencesOfString:@"_@,DOT,@_" withString:@"."];
+    regex = [regex stringByReplacingOccurrencesOfString:@"_@,STAR,@_" withString:@".*"];
+    return [NSString stringWithFormat:@"^%@$", regex];
+}
+
+NSString *ATPathSpecEntryType_AdjustTrailingSlashInPathString(ATPathSpecEntryType type, NSString *path) {
+    BOOL needsSlash = (type == ATPathSpecEntryTypeFolder);
+    BOOL hasSlash = [path hasSuffix:@"/"];
+    if (needsSlash && !hasSlash)
+        return [path stringByAppendingString:@"/"];
+    else if (!needsSlash && hasSlash)
+        return [path substringToIndex:path.length - 1];
+    else
+        return path;
+}
+
+NSString *ATPathSpecSyntaxOptions_QuoteIfNeeded(NSString *string, ATPathSpecSyntaxOptions options) {
+    if (!(options & ATPathSpecSyntaxOptionsAllowBackslashEscape))
+        return string;
+
+    NSMutableCharacterSet *specialCharacters = [NSMutableCharacterSet new];
+    [specialCharacters addCharactersInString:@"\\"];
+    if (options & ATPathSpecSyntaxOptionsAllowNewlineSeparator)
+        [specialCharacters formUnionWithCharacterSet:[NSCharacterSet newlineCharacterSet]];
+    if (options & ATPathSpecSyntaxOptionsAllowCommaSeparator)
+        [specialCharacters addCharactersInString:@","];
+    if (options & ATPathSpecSyntaxOptionsAllowWhitespaceSeparator)
+        [specialCharacters formUnionWithCharacterSet:[NSCharacterSet whitespaceCharacterSet]];
+    if (options & ATPathSpecSyntaxOptionsAllowPipeUnion)
+        [specialCharacters addCharactersInString:@"|"];
+    if (options & ATPathSpecSyntaxOptionsAllowAmpersandIntersection)
+        [specialCharacters addCharactersInString:@"&"];
+    if (options & ATPathSpecSyntaxOptionsAllowParen)
+        [specialCharacters addCharactersInString:@"()"];
+    if (options & ATPathSpecSyntaxOptionsAllowHashComment)
+        [specialCharacters addCharactersInString:@"#"];
+    if (options & ATPathSpecSyntaxOptionsAllowBangNegation)
+        [specialCharacters addCharactersInString:@"!"];
+    return ATPathSpec_Escape(string, specialCharacters);
+}
+
+NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSyntaxOptions options) {
+    if (!(options & ATPathSpecSyntaxOptionsAllowBackslashEscape))
+        return string;
+    return ATPathSpec_Unescape(string);
+}
+
+
+
+@implementation ATPathSpec (ATPathSpecPrivate)
 
 + (void)enumerateTokensInString:(NSString *)string withSyntaxOptions:(ATPathSpecSyntaxOptions)options usingBlock:(ATPathSpecTokenBlock)block decodeTokens:(BOOL)decodeTokens {
     BOOL escapeEnabled = !!(options & ATPathSpecSyntaxOptionsAllowBackslashEscape);
@@ -106,7 +218,7 @@ static NSString *ATPathSpecTokenTypeNames[] = {
             NSRange textTokenRange = NSMakeRange(textTokenStart, textTokenEnd - textTokenStart);
             NSString *textTokenString = nil;
             if (decodeTokens) {
-                textTokenString = [self decodeEscapesInString:[[string substringWithRange:textTokenRange] stringByTrimmingCharactersInSet:whitespaceCharacters]];
+                textTokenString = ATPathSpec_Unescape([[string substringWithRange:textTokenRange] stringByTrimmingCharactersInSet:whitespaceCharacters]);
             }
             if (queuedTokenType != ATPathSpecTokenTypeNone) {
                 block(queuedTokenType, queuedTokenRange, nil);
@@ -201,36 +313,16 @@ static NSString *ATPathSpecTokenTypeNames[] = {
     return [description componentsJoinedByString:@" "];
 }
 
-+ (NSString *)decodeEscapesInString:(NSString *)string {
-    static NSCharacterSet *escapes;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        escapes = [NSCharacterSet characterSetWithCharactersInString:@"\\"];
-    });
-    
-    NSRange range = [string rangeOfCharacterFromSet:escapes];
-    if (range.location == NSNotFound)
-        return string;
+- (BOOL)isComplexExpression {
+    return NO;
+}
 
-    NSUInteger srclen = string.length;
-    unichar source[srclen];
-    [string getCharacters:source range:NSMakeRange(0, srclen)];
-
-    unichar result[srclen];
-    NSUInteger reslen = 0;
-
-    for (unichar *srcend = source + srclen, *psrc = source; psrc < srcend; ++psrc) {
-        unichar ch = *psrc;
-        if (ch == '\\') {
-            ++psrc;
-            if (psrc < srcend)
-                result[reslen++] = *psrc;
-        } else {
-            result[reslen++] = ch;
-        }
-    }
-
-    return [NSString stringWithCharacters:result length:reslen];
+- (NSString *)parenthesizedStringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options {
+    NSString *repr = [self stringRepresentationWithSyntaxOptions:options];
+    if ([self isComplexExpression])
+        return [NSString stringWithFormat:@"(%@)", repr];
+    else
+        return repr;
 }
 
 @end
@@ -402,7 +494,7 @@ static NSString *ATPathSpecTokenTypeNames[] = {
 
     NSUInteger wildcardPos = [string rangeOfCharacterFromSet:wildcards].location;
     if (wildcardPos == NSNotFound) {
-        // TODO: plain string
+        return [self pathSpecMatchingName:string type:type];
     } else {
         if (wildcardPos == 0) {
             NSString *suffix = [string substringFromIndex:wildcardPos + 1];
@@ -411,14 +503,20 @@ static NSString *ATPathSpecTokenTypeNames[] = {
                 return [self pathSpecMatchingNameSuffix:[string substringFromIndex:1] type:type];
             }
         }
-        // TODO: complicated wildcard
+        return [self pathSpecMatchingNamePattern:string type:type];
     }
 
     return_error(nil, outError, ([NSError errorWithDomain:ATPathSpecErrorDomain code:ATPathSpecErrorCodeInvalidSpecString userInfo:@{ATPathSpecErrorSpecStringKey: originalString, NSLocalizedDescriptionKey:[NSString stringWithFormat:@"Invalid path spec syntax: %@", originalString]}]));
 }
 
++ (ATPathSpec *)pathSpecMatchingName:(NSString *)name type:(ATPathSpecEntryType)type {
+    return [[ATLiteralPathSpec alloc] initWithName:name type:type];
+}
 + (ATPathSpec *)pathSpecMatchingNameSuffix:(NSString *)suffix type:(ATPathSpecEntryType)type {
     return [[ATSuffixPathSpec alloc] initWithSuffix:suffix type:type];
+}
++ (ATPathSpec *)pathSpecMatchingNamePattern:(NSString *)pattern type:(ATPathSpecEntryType)type {
+    return [[ATPatternPathSpec alloc] initWithPattern:pattern type:type];
 }
 
 - (BOOL)matchesPath:(NSString *)path type:(ATPathSpecEntryType)type {
@@ -441,10 +539,51 @@ static NSString *ATPathSpecTokenTypeNames[] = {
 //    abort();
 //}
 
+- (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options {
+    abort();
+}
+
+- (NSString *)description {
+    return [self stringRepresentationWithSyntaxOptions:ATPathSpecSyntaxOptionsExtended];
+}
+
 @end
 
 
 #pragma mark -
+
+
+@implementation ATLiteralPathSpec
+
+@synthesize name = _name;
+@synthesize type = _type;
+
+- (id)initWithName:(NSString *)name type:(ATPathSpecEntryType)type {
+    self = [super init];
+    if (self) {
+        _name = [name copy];
+        _type = type;
+    }
+    return self;
+}
+
+- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type {
+    if (type != _type)
+        return ATPathSpecMatchResultUnknown;
+
+    NSString *name = [path lastPathComponent];
+    return [_name isEqualToString:name];
+}
+
+- (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options {
+    return ATPathSpecSyntaxOptions_QuoteIfNeeded(ATPathSpecEntryType_AdjustTrailingSlashInPathString(_type, _name), options);
+}
+
+- (BOOL)isComplexExpression {
+    return NO;
+}
+
+@end
 
 
 @implementation ATSuffixPathSpec
@@ -469,6 +608,50 @@ static NSString *ATPathSpecTokenTypeNames[] = {
         return ATPathSpecMatchResultUnknown;
 
     return ATPathSpecMatchResultMatched;
+}
+
+- (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options {
+    return ATPathSpecSyntaxOptions_QuoteIfNeeded(ATPathSpecEntryType_AdjustTrailingSlashInPathString(_type, [NSString stringWithFormat:@"*%@", _suffix]), options);
+}
+
+- (BOOL)isComplexExpression {
+    return NO;
+}
+
+@end
+
+
+@implementation ATPatternPathSpec {
+    NSString *_regex;
+}
+
+@synthesize pattern = _pattern;
+@synthesize type = _type;
+
+- (id)initWithPattern:(NSString *)pattern type:(ATPathSpecEntryType)type {
+    self = [super init];
+    if (self) {
+        _pattern = [pattern copy];
+        _type = type;
+        _regex = ATPathSpec_RegexFromPatternString(_pattern);
+    }
+    return self;
+}
+
+- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type {
+    if (type != _type)
+        return ATPathSpecMatchResultUnknown;
+
+    NSString *name = [path lastPathComponent];
+    return [name isMatchedByRegex:_regex];
+}
+
+- (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options {
+    return ATPathSpecSyntaxOptions_QuoteIfNeeded(ATPathSpecEntryType_AdjustTrailingSlashInPathString(_type, _pattern), options);
+}
+
+- (BOOL)isComplexExpression {
+    return NO;
 }
 
 @end
@@ -497,6 +680,18 @@ static NSString *ATPathSpecTokenTypeNames[] = {
     return ATPathSpecMatchResultUnknown;
 }
 
+- (BOOL)isComplexExpression {
+    return YES;
+}
+
+- (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options {
+    NSMutableArray *strings = [NSMutableArray new];
+    for (ATPathSpec *spec in _specs) {
+        [strings addObject:[spec parenthesizedStringRepresentationWithSyntaxOptions:options]];
+    }
+    return [strings componentsJoinedByString:@" | "];
+}
+
 @end
 
 
@@ -521,6 +716,18 @@ static NSString *ATPathSpecTokenTypeNames[] = {
             return ATPathSpecMatchResultUnknown;
     }
     return ATPathSpecMatchResultMatched;
+}
+
+- (BOOL)isComplexExpression {
+    return YES;
+}
+
+- (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options {
+    NSMutableArray *strings = [NSMutableArray new];
+    for (ATPathSpec *spec in _specs) {
+        [strings addObject:[spec parenthesizedStringRepresentationWithSyntaxOptions:options]];
+    }
+    return [strings componentsJoinedByString:@" & "];
 }
 
 @end
