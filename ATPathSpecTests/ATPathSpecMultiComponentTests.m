@@ -8,6 +8,14 @@
 
 @implementation ATPathSpecMultiComponentTests
 
+- (void)testAnyFileIsRootedOption {
+    ATPathSpec *spec = [ATPathSpec pathSpecWithString:@"README.txt" syntaxOptions:ATPathSpecSyntaxOptionsPlainMask];
+    XCTAssertEqualObjects([spec description], @"/README.txt", "");
+    XCTAssertTrue( [spec matchesPath:@"README.txt" type:ATPathSpecEntryTypeFile], "");
+    XCTAssertTrue(![spec matchesPath:@"docs/README.txt" type:ATPathSpecEntryTypeFile], "");
+}
+
+
 - (void)testRootedFile {
     ATPathSpec *spec = [ATPathSpec pathSpecWithString:@"/README.txt" syntaxOptions:ATPathSpecSyntaxOptionsExtended];
     XCTAssertEqualObjects([spec description], @"/README.txt", "");

@@ -623,7 +623,7 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
 
     NSArray *components = [string pathComponents];
 
-    if (components.count == 1) {
+    if ((options & ATPathSpecSyntaxOptionsMatchesAnyFolderWhenNoPathSpecified) && (components.count == 1)) {
         // no path specified => matches this name in any subfolder
         ATMask *mask = [ATMask maskWithString:string syntaxOptions:options];
         return [self pathSpecMatchingNameMask:mask type:type];
