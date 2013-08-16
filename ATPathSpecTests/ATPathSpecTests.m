@@ -70,6 +70,21 @@
     XCTAssertEqualObjects([spec description], @"!(*.txt | *.html)", "");
 }
 
+- (void)testCommaListWithNegations {
+    ATPathSpec *spec = [ATPathSpec pathSpecWithString:@"*.txt *.html !README.* README.txt" syntaxOptions:ATPathSpecSyntaxOptionsExtended];
+    XCTAssertEqualObjects([spec description], @"((*.txt | *.html) & !README.*) | README.txt", "");
+    XCTAssertTrue( [spec matchesPath:@"hellow.txt" type:ATPathSpecEntryTypeFile], "");
+    XCTAssertTrue( [spec matchesPath:@"hellow.html" type:ATPathSpecEntryTypeFile], "");
+    XCTAssertTrue( [spec matchesPath:@"README.txt" type:ATPathSpecEntryTypeFile], "");
+    XCTAssertTrue(![spec matchesPath:@"README.html" type:ATPathSpecEntryTypeFile], "");
+    XCTAssertTrue(![spec matchesPath:@"README.doc" type:ATPathSpecEntryTypeFile], "");
+    XCTAssertTrue( [spec matchesPath:@"docs/hellow.txt" type:ATPathSpecEntryTypeFile], "");
+    XCTAssertTrue( [spec matchesPath:@"docs/hellow.html" type:ATPathSpecEntryTypeFile], "");
+    XCTAssertTrue( [spec matchesPath:@"docs/README.txt" type:ATPathSpecEntryTypeFile], "");
+    XCTAssertTrue(![spec matchesPath:@"docs/README.html" type:ATPathSpecEntryTypeFile], "");
+    XCTAssertTrue(![spec matchesPath:@"docs/README.doc" type:ATPathSpecEntryTypeFile], "");
+}
+
 - (void)testIntersection {
     ATPathSpec *spec = [ATPathSpec pathSpecWithString:@"*.txt & README.*" syntaxOptions:ATPathSpecSyntaxOptionsExtended];
     XCTAssertTrue( [spec matchesPath:@"README.txt" type:ATPathSpecEntryTypeFile], "");

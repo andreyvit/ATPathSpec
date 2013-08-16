@@ -349,21 +349,6 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
 
     __block BOOL failed = NO;
 
-    void (^addSpec)(ATPathSpec *spec) = ^(ATPathSpec *spec){
-        lastNegated = nextNegated;
-        if (nextNegated) {
-            spec = [spec negatedPathSpec];
-        }
-        [specs addObject:spec];
-        nextNegated = NO;
-    };
-
-    void (^initContext)() = ^{
-        specs = [NSMutableArray new];
-        op = ATPathSpecTokenTypeNone;
-        lastNegated = nextNegated = NO;
-    };
-
     ATPathSpec *(^flushContext)() = ^ATPathSpec *{
         if (specs.count == 0) {
             if (outError)
@@ -389,6 +374,27 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
             default:
                 abort();
         }
+    };
+    
+    void (^addSpec)(ATPathSpec *spec) = ^(ATPathSpec *spec){
+        if (op == ATPathSpecTokenTypeComma && specs.count > 1 && nextNegated != lastNegated) {
+            // a b !c d -> ((a | b) & !c) | d, so we need to flush when switching between negated and non-negated patterns
+            ATPathSpec *other = flushContext();
+            [specs removeAllObjects];
+            [specs addObject:other];
+        }
+        lastNegated = nextNegated;
+        if (nextNegated) {
+            spec = [spec negatedPathSpec];
+        }
+        [specs addObject:spec];
+        nextNegated = NO;
+    };
+
+    void (^initContext)() = ^{
+        specs = [NSMutableArray new];
+        op = ATPathSpecTokenTypeNone;
+        lastNegated = nextNegated = NO;
     };
 
     void (^pushContext)() = ^{
