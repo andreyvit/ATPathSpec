@@ -21,6 +21,7 @@
 		4398659B17BDDFBE00EC6471 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4398659917BDDFB700EC6471 /* libicucore.dylib */; };
 		439865A117BE109E00EC6471 /* ATPathSpecMultiComponentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4398659F17BE109E00EC6471 /* ATPathSpecMultiComponentTests.m */; };
 		439865A317BE186500EC6471 /* ATPathSpecMetadataTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 439865A217BE186500EC6471 /* ATPathSpecMetadataTests.m */; };
+		439865A517BE1B4900EC6471 /* ATPathSpecIntroTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 439865A417BE1B4900EC6471 /* ATPathSpecIntroTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 		4398659917BDDFB700EC6471 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		4398659F17BE109E00EC6471 /* ATPathSpecMultiComponentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATPathSpecMultiComponentTests.m; sourceTree = "<group>"; };
 		439865A217BE186500EC6471 /* ATPathSpecMetadataTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATPathSpecMetadataTests.m; sourceTree = "<group>"; };
+		439865A417BE1B4900EC6471 /* ATPathSpecIntroTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATPathSpecIntroTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 		4398657C17BCBF6C00EC6471 /* ATPathSpecTests */ = {
 			isa = PBXGroup;
 			children = (
+				439865A417BE1B4900EC6471 /* ATPathSpecIntroTests.m */,
 				4398659017BCF12900EC6471 /* ATPathSpecTokenizerTests.m */,
 				4398658217BCBF6C00EC6471 /* ATPathSpecSingleComponentTests.m */,
 				4398659F17BE109E00EC6471 /* ATPathSpecMultiComponentTests.m */,
@@ -274,6 +277,7 @@
 				439865A317BE186500EC6471 /* ATPathSpecMetadataTests.m in Sources */,
 				4398659117BCF12900EC6471 /* ATPathSpecTokenizerTests.m in Sources */,
 				439865A117BE109E00EC6471 /* ATPathSpecMultiComponentTests.m in Sources */,
+				439865A517BE1B4900EC6471 /* ATPathSpecIntroTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

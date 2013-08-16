@@ -27,10 +27,13 @@ typedef enum {
     ATPathSpecSyntaxOptionsRequireTrailingSlashForFolders = 0x100,
     ATPathSpecSyntaxOptionsMatchesAnyFolderWhenNoPathSpecified = 0x400,
 
-    ATPathSpecSyntaxOptionsPlainMask = 0,
-    ATPathSpecSyntaxOptionsPlainList = ATPathSpecSyntaxOptionsAllowNewlineSeparator,
-    ATPathSpecSyntaxOptionsGitignore = ATPathSpecSyntaxOptionsAllowBackslashEscape | ATPathSpecSyntaxOptionsAllowNewlineSeparator | ATPathSpecSyntaxOptionsAllowBangNegation | ATPathSpecSyntaxOptionsAllowHashComment | ATPathSpecSyntaxOptionsMatchesAnyFolderWhenNoPathSpecified,
-    ATPathSpecSyntaxOptionsExtended = ATPathSpecSyntaxOptionsAllowBackslashEscape | ATPathSpecSyntaxOptionsAllowNewlineSeparator | ATPathSpecSyntaxOptionsAllowCommaSeparator | ATPathSpecSyntaxOptionsAllowWhitespaceSeparator | ATPathSpecSyntaxOptionsAllowPipeUnion | ATPathSpecSyntaxOptionsAllowAmpersandIntersection | ATPathSpecSyntaxOptionsAllowParen | ATPathSpecSyntaxOptionsAllowBangNegation | ATPathSpecSyntaxOptionsAllowHashComment | ATPathSpecSyntaxOptionsRequireTrailingSlashForFolders | ATPathSpecSyntaxOptionsMatchesAnyFolderWhenNoPathSpecified,
+    // shell-style glob, supporting `*` and `?` wildcards
+    ATPathSpecSyntaxFlavorGlob = 0,
+    // 100% compatibility with `.gitignore`
+    ATPathSpecSyntaxFlavorGitignore = ATPathSpecSyntaxOptionsAllowBackslashEscape | ATPathSpecSyntaxOptionsAllowNewlineSeparator | ATPathSpecSyntaxOptionsAllowBangNegation | ATPathSpecSyntaxOptionsAllowHashComment | ATPathSpecSyntaxOptionsMatchesAnyFolderWhenNoPathSpecified,
+    // enables all ATPathSpec features
+    // note that it's not fully compatible with gitignore because it has ATPathSpecSyntaxOptionsRequireTrailingSlashForFolders flag set
+    ATPathSpecSyntaxFlavorExtended = ATPathSpecSyntaxOptionsAllowBackslashEscape | ATPathSpecSyntaxOptionsAllowNewlineSeparator | ATPathSpecSyntaxOptionsAllowCommaSeparator | ATPathSpecSyntaxOptionsAllowWhitespaceSeparator | ATPathSpecSyntaxOptionsAllowPipeUnion | ATPathSpecSyntaxOptionsAllowAmpersandIntersection | ATPathSpecSyntaxOptionsAllowParen | ATPathSpecSyntaxOptionsAllowBangNegation | ATPathSpecSyntaxOptionsAllowHashComment | ATPathSpecSyntaxOptionsRequireTrailingSlashForFolders | ATPathSpecSyntaxOptionsMatchesAnyFolderWhenNoPathSpecified,
 } ATPathSpecSyntaxOptions;
 
 

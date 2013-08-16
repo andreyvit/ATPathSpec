@@ -9,7 +9,7 @@
 @implementation ATPathSpecMultiComponentTests
 
 - (void)testAnyFileIsRootedOption {
-    ATPathSpec *spec = [ATPathSpec pathSpecWithString:@"README.txt" syntaxOptions:ATPathSpecSyntaxOptionsPlainMask];
+    ATPathSpec *spec = [ATPathSpec pathSpecWithString:@"README.txt" syntaxOptions:ATPathSpecSyntaxFlavorGlob];
     XCTAssertEqualObjects([spec description], @"/README.txt", "");
     XCTAssertTrue( [spec matchesPath:@"README.txt" type:ATPathSpecEntryTypeFile], "");
     XCTAssertTrue(![spec matchesPath:@"docs/README.txt" type:ATPathSpecEntryTypeFile], "");
@@ -17,14 +17,14 @@
 
 
 - (void)testRootedFile {
-    ATPathSpec *spec = [ATPathSpec pathSpecWithString:@"/README.txt" syntaxOptions:ATPathSpecSyntaxOptionsExtended];
+    ATPathSpec *spec = [ATPathSpec pathSpecWithString:@"/README.txt" syntaxOptions:ATPathSpecSyntaxFlavorExtended];
     XCTAssertEqualObjects([spec description], @"/README.txt", "");
     XCTAssertTrue( [spec matchesPath:@"README.txt" type:ATPathSpecEntryTypeFile], "");
     XCTAssertTrue(![spec matchesPath:@"docs/README.txt" type:ATPathSpecEntryTypeFile], "");
 }
 
 - (void)testSubfolder {
-    ATPathSpec *spec = [ATPathSpec pathSpecWithString:@"docs/*.txt" syntaxOptions:ATPathSpecSyntaxOptionsExtended];
+    ATPathSpec *spec = [ATPathSpec pathSpecWithString:@"docs/*.txt" syntaxOptions:ATPathSpecSyntaxFlavorExtended];
     XCTAssertEqualObjects([spec description], @"docs/*.txt", "");
     XCTAssertTrue(![spec matchesPath:@"hellow.txt" type:ATPathSpecEntryTypeFile], "");
     XCTAssertTrue(![spec matchesPath:@"README.txt" type:ATPathSpecEntryTypeFile], "");
@@ -35,7 +35,7 @@
 }
 
 - (void)testSubfolderMask {
-    ATPathSpec *spec = [ATPathSpec pathSpecWithString:@"d*/*.txt" syntaxOptions:ATPathSpecSyntaxOptionsExtended];
+    ATPathSpec *spec = [ATPathSpec pathSpecWithString:@"d*/*.txt" syntaxOptions:ATPathSpecSyntaxFlavorExtended];
     XCTAssertEqualObjects([spec description], @"d*/*.txt", "");
     XCTAssertTrue(![spec matchesPath:@"README.txt" type:ATPathSpecEntryTypeFile], "");
     XCTAssertTrue(![spec matchesPath:@"README.html" type:ATPathSpecEntryTypeFile], "");

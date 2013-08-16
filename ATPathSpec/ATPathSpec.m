@@ -179,7 +179,7 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
 }
 
 - (NSString *)description {
-    return [self stringRepresentationWithSyntaxOptions:ATPathSpecSyntaxOptionsExtended];
+    return [self stringRepresentationWithSyntaxOptions:ATPathSpecSyntaxFlavorExtended];
 }
 
 @end
@@ -684,7 +684,7 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
 }
 
 - (NSString *)description {
-    return [self stringRepresentationWithSyntaxOptions:ATPathSpecSyntaxOptionsExtended];
+    return [self stringRepresentationWithSyntaxOptions:ATPathSpecSyntaxFlavorExtended];
 }
 
 @end
