@@ -72,6 +72,10 @@ typedef void (^ATPathSpecTokenBlock)(ATPathSpecTokenType type, NSRange range, NS
 @end
 
 
+@interface ATEmptyPathSpec : ATPathSpec
+@end
+
+
 @interface ATSimplePathSpec : ATPathSpec
 
 - (id)initWithMask:(ATMask *)mask type:(ATPathSpecEntryType)type;

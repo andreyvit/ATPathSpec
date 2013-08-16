@@ -56,6 +56,8 @@ typedef enum {
 + (ATPathSpec *)pathSpecWithString:(NSString *)string syntaxOptions:(ATPathSpecSyntaxOptions)options;
 + (ATPathSpec *)pathSpecWithString:(NSString *)string syntaxOptions:(ATPathSpecSyntaxOptions)options error:(NSError **)error;
 
++ (ATPathSpec *)emptyPathSpec;
+
 + (ATPathSpec *)pathSpecMatchingMask:(ATMask *)mask type:(ATPathSpecEntryType)type;
 + (ATPathSpec *)pathSpecMatchingUnionOf:(NSArray *)specs;
 + (ATPathSpec *)pathSpecMatchingIntersectionOf:(NSArray *)specs;

@@ -8,6 +8,22 @@
 
 @implementation ATPathSpecTests
 
+- (void)testEmpty1 {
+    ATPathSpec *spec = [ATPathSpec emptyPathSpec];
+    XCTAssertEqualObjects([spec description], @"()", "");
+    XCTAssertTrue(![spec matchesPath:@"README.txt" type:ATPathSpecEntryTypeFile], "");
+}
+- (void)testEmpty2 {
+    ATPathSpec *spec = [ATPathSpec pathSpecWithString:@"" syntaxOptions:ATPathSpecSyntaxOptionsExtended];
+    XCTAssertEqualObjects([spec description], @"()", "");
+    XCTAssertTrue(![spec matchesPath:@"README.txt" type:ATPathSpecEntryTypeFile], "");
+}
+- (void)testEmpty3 {
+    ATPathSpec *spec = [ATPathSpec pathSpecWithString:@"()" syntaxOptions:ATPathSpecSyntaxOptionsExtended];
+    XCTAssertEqualObjects([spec description], @"()", "");
+    XCTAssertTrue(![spec matchesPath:@"README.txt" type:ATPathSpecEntryTypeFile], "");
+}
+
 - (void)testLiteralName {
     ATPathSpec *spec = [ATPathSpec pathSpecWithString:@"README.txt" syntaxOptions:ATPathSpecSyntaxOptionsExtended];
     XCTAssertEqualObjects([spec description], @"README.txt", "");

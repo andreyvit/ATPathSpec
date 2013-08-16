@@ -450,7 +450,7 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
 @implementation ATPathSpec
 
 + (ATPathSpec *)pathSpecWithString:(NSString *)string syntaxOptions:(ATPathSpecSyntaxOptions)options {
-    NSError *error;
+    NSError *error = nil;
     ATPathSpec *result = [self pathSpecWithString:string syntaxOptions:options error:&error];
     if (!result) {
         NSAssert(NO, @"Error in [ATPathSpec pathSpecWithString:\"%@\"]: %@", string, error.localizedDescription);
@@ -532,7 +532,8 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
         nextNegated = [c[@"nextNegated"] boolValue];
         lastNegated = [c[@"lastNegated"] boolValue];
 
-        addSpec(spec);
+        if (spec)
+            addSpec(spec);
     };
 
     [ATPathSpec enumerateTokensInString:string withSyntaxOptions:options usingBlock:^(ATPathSpecTokenType type, NSRange range, NSString *decoded) {
@@ -595,6 +596,9 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
     if (failed)
         return nil;
 
+    if (specs.count == 0)
+        return [ATPathSpec emptyPathSpec];
+
     return flushContext();
 }
 
@@ -602,7 +606,7 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
     NSString *string = originalString;
     NSUInteger len = string.length;
     if (len == 0)
-        return_error(nil, outError, ([NSError errorWithDomain:ATPathSpecErrorDomain code:ATPathSpecErrorCodeInvalidSpecString userInfo:@{ATPathSpecErrorSpecStringKey: originalString, NSLocalizedDescriptionKey:@"Empty path spec"}]));
+        return [ATPathSpec emptyPathSpec];
 
     ATPathSpecEntryType type = ATPathSpecEntryTypeFile;
     if ([string characterAtIndex:len - 1] == '/') {
@@ -631,6 +635,15 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
     return [[ATNegatedPathSpec alloc] initWithSpec:self];
 }
 
++ (ATPathSpec *)emptyPathSpec {
+    static ATPathSpec *emptyPathSpec;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        emptyPathSpec = [[ATEmptyPathSpec alloc] init];
+    });
+    return emptyPathSpec;
+}
+
 + (ATPathSpec *)pathSpecMatchingUnionOf:(NSArray *)specs {
     return [[ATUnionPathSpec alloc] initWithSpecs:specs];
 }
@@ -652,6 +665,28 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
 
 #pragma mark -
 
+@implementation ATEmptyPathSpec : ATPathSpec
+
+- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type {
+    return NO;
+}
+
+- (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options {
+    if (!!(options & ATPathSpecSyntaxOptionsAllowParen))
+        return @"()";
+    else
+        return @"__emptyPathSpec__";
+
+}
+
+- (BOOL)isComplexExpression {
+    return NO;
+}
+
+@end
+
+
+#pragma mark -
 
 @implementation ATSimplePathSpec
 
