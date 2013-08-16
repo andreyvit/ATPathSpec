@@ -58,7 +58,8 @@ typedef enum {
 
 + (ATPathSpec *)emptyPathSpec;
 
-+ (ATPathSpec *)pathSpecMatchingMask:(ATMask *)mask type:(ATPathSpecEntryType)type;
++ (ATPathSpec *)pathSpecMatchingNameMask:(ATMask *)mask type:(ATPathSpecEntryType)type;
++ (ATPathSpec *)pathSpecMatchingPathMasks:(NSArray *)masks type:(ATPathSpecEntryType)type;
 + (ATPathSpec *)pathSpecMatchingUnionOf:(NSArray *)specs;
 + (ATPathSpec *)pathSpecMatchingIntersectionOf:(NSArray *)specs;
 

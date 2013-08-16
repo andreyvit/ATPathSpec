@@ -76,11 +76,21 @@ typedef void (^ATPathSpecTokenBlock)(ATPathSpecTokenType type, NSRange range, NS
 @end
 
 
-@interface ATSimplePathSpec : ATPathSpec
+@interface ATNameMaskPathSpec : ATPathSpec
 
 - (id)initWithMask:(ATMask *)mask type:(ATPathSpecEntryType)type;
 
 @property(nonatomic, readonly) ATMask *mask;
+@property(nonatomic, readonly) ATPathSpecEntryType type;
+
+@end
+
+
+@interface ATPathMasksPathSpec : ATPathSpec
+
+- (id)initWithMasks:(NSArray *)masks type:(ATPathSpecEntryType)type;
+
+@property(nonatomic, readonly) NSArray *masks;
 @property(nonatomic, readonly) ATPathSpecEntryType type;
 
 @end

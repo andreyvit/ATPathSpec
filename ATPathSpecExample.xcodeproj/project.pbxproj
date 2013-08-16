@@ -19,6 +19,7 @@
 		4398659517BDDF1C00EC6471 /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 4398659317BDDF1C00EC6471 /* RegexKitLite.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4398659A17BDDFB700EC6471 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4398659917BDDFB700EC6471 /* libicucore.dylib */; };
 		4398659B17BDDFBE00EC6471 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4398659917BDDFB700EC6471 /* libicucore.dylib */; };
+		439865A117BE109E00EC6471 /* ATPathSpecMultiComponentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4398659F17BE109E00EC6471 /* ATPathSpecMultiComponentTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		4398659317BDDF1C00EC6471 /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
 		4398659617BDDF7000EC6471 /* libpcre.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpcre.dylib; path = usr/lib/libpcre.dylib; sourceTree = SDKROOT; };
 		4398659917BDDFB700EC6471 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
+		4398659F17BE109E00EC6471 /* ATPathSpecMultiComponentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATPathSpecMultiComponentTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +141,7 @@
 			children = (
 				4398659017BCF12900EC6471 /* ATPathSpecTokenizerTests.m */,
 				4398658217BCBF6C00EC6471 /* ATPathSpecSingleComponentTests.m */,
+				4398659F17BE109E00EC6471 /* ATPathSpecMultiComponentTests.m */,
 				4398657D17BCBF6C00EC6471 /* Supporting Files */,
 			);
 			path = ATPathSpecTests;
@@ -266,6 +269,7 @@
 				4398658317BCBF6C00EC6471 /* ATPathSpecSingleComponentTests.m in Sources */,
 				4398659517BDDF1C00EC6471 /* RegexKitLite.m in Sources */,
 				4398659117BCF12900EC6471 /* ATPathSpecTokenizerTests.m in Sources */,
+				439865A117BE109E00EC6471 /* ATPathSpecMultiComponentTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

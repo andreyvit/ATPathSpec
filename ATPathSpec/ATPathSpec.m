@@ -615,12 +615,33 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
         --len;
     }
 
-    ATMask *mask = [ATMask maskWithString:string syntaxOptions:options];
-    return [self pathSpecMatchingMask:mask type:type];
+    NSArray *components = [string pathComponents];
+
+    if (components.count == 1) {
+        // no path specified => matches this name in any subfolder
+        ATMask *mask = [ATMask maskWithString:string syntaxOptions:options];
+        return [self pathSpecMatchingNameMask:mask type:type];
+    } else {
+        // strip leading slash
+        if ([components[0] isEqualToString:@"/"])
+            components = [components subarrayWithRange:NSMakeRange(1, components.count - 1)];
+
+        NSMutableArray *masks = [NSMutableArray new];
+        for (NSString *component in components) {
+            ATMask *mask = [ATMask maskWithString:component syntaxOptions:options];
+            [masks addObject:mask];
+        }
+
+        return [self pathSpecMatchingPathMasks:masks type:type];
+    }
 }
 
-+ (ATPathSpec *)pathSpecMatchingMask:(ATMask *)mask type:(ATPathSpecEntryType)type {
-    return [[ATSimplePathSpec alloc] initWithMask:mask type:type];
++ (ATPathSpec *)pathSpecMatchingNameMask:(ATMask *)mask type:(ATPathSpecEntryType)type {
+    return [[ATNameMaskPathSpec alloc] initWithMask:mask type:type];
+}
+
++ (ATPathSpec *)pathSpecMatchingPathMasks:(NSArray *)masks type:(ATPathSpecEntryType)type {
+    return [[ATPathMasksPathSpec alloc] initWithMasks:masks type:type];
 }
 
 - (BOOL)matchesPath:(NSString *)path type:(ATPathSpecEntryType)type {
@@ -688,7 +709,7 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
 
 #pragma mark -
 
-@implementation ATSimplePathSpec
+@implementation ATNameMaskPathSpec
 
 @synthesize mask = _mask;
 @synthesize type = _type;
@@ -711,6 +732,61 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
 
 - (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options {
     return ATPathSpecEntryType_AdjustTrailingSlashInPathString(_type, [_mask stringRepresentationWithSyntaxOptions:options]);
+}
+
+- (BOOL)isComplexExpression {
+    return NO;
+}
+
+@end
+
+
+#pragma mark -
+
+@implementation ATPathMasksPathSpec
+
+@synthesize masks = _masks;
+@synthesize type = _type;
+
+- (id)initWithMasks:(NSArray *)masks type:(ATPathSpecEntryType)type {
+    self = [super init];
+    if (self) {
+        _masks = [masks copy];
+        _type = type;
+    }
+    return self;
+}
+
+- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type {
+    if (type != _type)
+        return ATPathSpecMatchResultUnknown;
+
+    NSArray *components = path.pathComponents;
+    if ([components[0] isEqualToString:@"/"])
+        components = [components subarrayWithRange:NSMakeRange(1, components.count - 1)];
+
+    if (components.count != _masks.count)
+        return ATPathSpecMatchResultUnknown;
+
+    NSInteger index = 0;
+    for (ATMask *mask in _masks) {
+        NSString *component = components[index++];
+
+        if (![mask matchesName:component])
+            return ATPathSpecMatchResultUnknown;
+    }
+    
+    return ATPathSpecMatchResultMatched;
+}
+
+- (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options {
+    NSMutableArray *strings = [NSMutableArray new];
+    if (_masks.count == 1)
+        [strings addObject:@""]; // to prefix with a slash
+    for (ATMask *mask in _masks) {
+        [strings addObject:[mask stringRepresentationWithSyntaxOptions:options]];
+    }
+    return ATPathSpecEntryType_AdjustTrailingSlashInPathString(_type, [strings componentsJoinedByString:@"/"]);
 }
 
 - (BOOL)isComplexExpression {
