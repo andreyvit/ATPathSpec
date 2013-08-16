@@ -9,6 +9,7 @@ typedef enum {
 } ATPathSpecMatchResult;
 
 typedef enum {
+    ATPathSpecEntryTypeFileOrFolder,
     ATPathSpecEntryTypeFile,
     ATPathSpecEntryTypeFolder,
 } ATPathSpecEntryType;

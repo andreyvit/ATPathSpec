@@ -107,6 +107,12 @@ NSString *ATPathSpecEntryType_AdjustTrailingSlashInPathString(ATPathSpecEntryTyp
         return path;
 }
 
+BOOL ATPathSpecEntryType_Match(ATPathSpecEntryType required, ATPathSpecEntryType actual) {
+    if (required == ATPathSpecEntryTypeFileOrFolder || actual == ATPathSpecEntryTypeFileOrFolder)
+        return YES;
+    return required == actual;
+}
+
 NSString *ATPathSpecSyntaxOptions_QuoteIfNeeded(NSString *string, ATPathSpecSyntaxOptions options) {
     if (!(options & ATPathSpecSyntaxOptionsAllowBackslashEscape))
         return string;
@@ -608,7 +614,7 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
     if (len == 0)
         return [ATPathSpec emptyPathSpec];
 
-    ATPathSpecEntryType type = ATPathSpecEntryTypeFile;
+    ATPathSpecEntryType type = (options & ATPathSpecSyntaxOptionsRequireTrailingSlashForFolders ? ATPathSpecEntryTypeFile : ATPathSpecEntryTypeFileOrFolder);
     if ([string characterAtIndex:len - 1] == '/') {
         type = ATPathSpecEntryTypeFolder;
         string = [string substringToIndex:len - 1];
@@ -724,7 +730,7 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
 }
 
 - (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type {
-    if (type != _type)
+    if (!ATPathSpecEntryType_Match(_type, type))
         return ATPathSpecMatchResultUnknown;
 
     return [_mask matchesName:[path lastPathComponent]];
@@ -758,7 +764,7 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
 }
 
 - (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type {
-    if (type != _type)
+    if (!ATPathSpecEntryType_Match(_type, type))
         return ATPathSpecMatchResultUnknown;
 
     NSArray *components = path.pathComponents;
