@@ -64,7 +64,25 @@ There is no operator precedence; you cannot mix different operators in the same 
 (I'd love to automatically wrap newline-separated expressions into parenthesizes, so that newline would be the only operator with lower precendece, but I didn't get to that yet. Right now, you cannot mix newlines, comma and whitespace separators with any other operators as well.)
 
 
+Extended flavor
+---------------
+
+The extended flavor has all syntax features enabled, so you can write stuff like:
+
+    (*.txt *.html *README* !docs/*.txt) & !(~* | *.tmp)
+
+Remember that extended flavor has `ATPathSpecSyntaxOptionsRequireTrailingSlashForFolders` enabled, so `.git` won't match the git subfolder, you need to use `.git/`.
+
+Unlike other flavors which strive for compatibility with existing APIs, the extended flavor will be accumulating features as those are added to the library.
+
+
 API
 ---
 
 See [ATPathSpec/ATPathSpec.h](ATPathSpec/ATPathSpec.h).
+
+
+License
+-------
+
+MIT license; see [LICENSE](LICENSE) file.
