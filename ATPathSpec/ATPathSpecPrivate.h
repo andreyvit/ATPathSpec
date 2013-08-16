@@ -9,6 +9,46 @@ NSString *ATPathSpecSyntaxOptions_QuoteIfNeeded(NSString *string, ATPathSpecSynt
 NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSyntaxOptions options);
 
 
+#pragma mark -
+
+@interface ATMask : NSObject
+
+- (BOOL)matchesName:(NSString *)name;
+
+- (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options;
+
+@end
+
+
+@interface ATLiteralMask : ATMask
+
+- (id)initWithName:(NSString *)name;
+
+@property(nonatomic, readonly) NSString *name;
+
+@end
+
+
+@interface ATSuffixMask : ATMask
+
+- (id)initWithSuffix:(NSString *)suffix;
+
+@property(nonatomic, readonly) NSString *suffix;
+
+@end
+
+
+@interface ATPatternMask : ATMask
+
+- (id)initWithPattern:(NSString *)pattern;
+
+@property(nonatomic, readonly) NSString *pattern;
+
+@end
+
+
+#pragma mark -
+
 @interface ATPathSpec (ATPathSpecPrivate)
 
 typedef enum {
@@ -40,31 +80,11 @@ typedef void (^ATPathSpecTokenBlock)(ATPathSpecTokenType type, NSRange range, NS
 @end
 
 
-@interface ATLiteralPathSpec : ATPathSpec
+@interface ATSimplePathSpec : ATPathSpec
 
-- (id)initWithName:(NSString *)name type:(ATPathSpecEntryType)type;
+- (id)initWithMask:(ATMask *)mask type:(ATPathSpecEntryType)type;
 
-@property(nonatomic, readonly) NSString *name;
-@property(nonatomic, readonly) ATPathSpecEntryType type;
-
-@end
-
-
-@interface ATSuffixPathSpec : ATPathSpec
-
-- (id)initWithSuffix:(NSString *)suffix type:(ATPathSpecEntryType)type;
-
-@property(nonatomic, readonly) NSString *suffix;
-@property(nonatomic, readonly) ATPathSpecEntryType type;
-
-@end
-
-
-@interface ATPatternPathSpec : ATPathSpec
-
-- (id)initWithPattern:(NSString *)pattern type:(ATPathSpecEntryType)type;
-
-@property(nonatomic, readonly) NSString *pattern;
+@property(nonatomic, readonly) ATMask *mask;
 @property(nonatomic, readonly) ATPathSpecEntryType type;
 
 @end

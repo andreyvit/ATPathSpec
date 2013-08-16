@@ -139,6 +139,104 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
 }
 
 
+#pragma mark -
+
+@implementation ATMask
+
+- (BOOL)matchesName:(NSString *)name {
+    abort();
+}
+
+- (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options {
+    abort();
+}
+
+- (NSString *)description {
+    return [self stringRepresentationWithSyntaxOptions:ATPathSpecSyntaxOptionsExtended];
+}
+
+@end
+
+
+#pragma mark -
+
+@implementation ATLiteralMask
+
+@synthesize name = _name;
+
+- (id)initWithName:(NSString *)name {
+    self = [super init];
+    if (self) {
+        _name = [name copy];
+    }
+    return self;
+}
+
+- (BOOL)matchesName:(NSString *)name {
+    return [_name isEqualToString:name];
+}
+
+- (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options {
+    return ATPathSpecSyntaxOptions_QuoteIfNeeded(_name, options);
+}
+
+@end
+
+
+@implementation ATSuffixMask
+
+@synthesize suffix=_suffix;
+
+- (id)initWithSuffix:(NSString *)suffix {
+    self = [super init];
+    if (self) {
+        _suffix = [suffix copy];
+    }
+    return self;
+}
+
+- (BOOL)matchesName:(NSString *)name {
+    NSUInteger nameLen = name.length, suffixLen = _suffix.length;
+    if (nameLen < _suffix.length || NSOrderedSame != [name compare:_suffix options:NSLiteralSearch range:NSMakeRange(nameLen - suffixLen, suffixLen)])
+        return ATPathSpecMatchResultUnknown;
+
+    return ATPathSpecMatchResultMatched;
+}
+
+- (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options {
+    return ATPathSpecSyntaxOptions_QuoteIfNeeded([NSString stringWithFormat:@"*%@", _suffix], options);
+}
+
+@end
+
+
+@implementation ATPatternMask {
+    NSString *_regex;
+}
+
+@synthesize pattern = _pattern;
+
+- (id)initWithPattern:(NSString *)pattern {
+    self = [super init];
+    if (self) {
+        _pattern = [pattern copy];
+        _regex = ATPathSpec_RegexFromPatternString(_pattern);
+    }
+    return self;
+}
+
+- (BOOL)matchesName:(NSString *)name {
+    return [name isMatchedByRegex:_regex];
+}
+
+- (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options {
+    return ATPathSpecSyntaxOptions_QuoteIfNeeded(_pattern, options);
+}
+
+@end
+
+
+#pragma mark -
 
 @implementation ATPathSpec (ATPathSpecPrivate)
 
@@ -516,13 +614,13 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
 }
 
 + (ATPathSpec *)pathSpecMatchingName:(NSString *)name type:(ATPathSpecEntryType)type {
-    return [[ATLiteralPathSpec alloc] initWithName:name type:type];
+    return [[ATSimplePathSpec alloc] initWithMask:[[ATLiteralMask alloc] initWithName:name] type:type];
 }
 + (ATPathSpec *)pathSpecMatchingNameSuffix:(NSString *)suffix type:(ATPathSpecEntryType)type {
-    return [[ATSuffixPathSpec alloc] initWithSuffix:suffix type:type];
+    return [[ATSimplePathSpec alloc] initWithMask:[[ATSuffixMask alloc] initWithSuffix:suffix] type:type];
 }
 + (ATPathSpec *)pathSpecMatchingNamePattern:(NSString *)pattern type:(ATPathSpecEntryType)type {
-    return [[ATPatternPathSpec alloc] initWithPattern:pattern type:type];
+    return [[ATSimplePathSpec alloc] initWithMask:[[ATPatternMask alloc] initWithPattern:pattern] type:type];
 }
 
 - (BOOL)matchesPath:(NSString *)path type:(ATPathSpecEntryType)type {
@@ -563,15 +661,15 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
 #pragma mark -
 
 
-@implementation ATLiteralPathSpec
+@implementation ATSimplePathSpec
 
-@synthesize name = _name;
+@synthesize mask = _mask;
 @synthesize type = _type;
 
-- (id)initWithName:(NSString *)name type:(ATPathSpecEntryType)type {
+- (id)initWithMask:(ATMask *)mask type:(ATPathSpecEntryType)type {
     self = [super init];
     if (self) {
-        _name = [name copy];
+        _mask = mask;
         _type = type;
     }
     return self;
@@ -581,83 +679,11 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
     if (type != _type)
         return ATPathSpecMatchResultUnknown;
 
-    NSString *name = [path lastPathComponent];
-    return [_name isEqualToString:name];
+    return [_mask matchesName:[path lastPathComponent]];
 }
 
 - (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options {
-    return ATPathSpecSyntaxOptions_QuoteIfNeeded(ATPathSpecEntryType_AdjustTrailingSlashInPathString(_type, _name), options);
-}
-
-- (BOOL)isComplexExpression {
-    return NO;
-}
-
-@end
-
-
-@implementation ATSuffixPathSpec
-
-@synthesize suffix=_suffix;
-
-- (id)initWithSuffix:(NSString *)suffix type:(ATPathSpecEntryType)type {
-    self = [super init];
-    if (self) {
-        _suffix = [suffix copy];
-    }
-    return self;
-}
-
-- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type {
-    if (type != _type)
-        return ATPathSpecMatchResultUnknown;
-
-    NSString *name = [path lastPathComponent];
-    NSUInteger nameLen = name.length, suffixLen = _suffix.length;
-    if (nameLen < _suffix.length || NSOrderedSame != [name compare:_suffix options:NSLiteralSearch range:NSMakeRange(nameLen - suffixLen, suffixLen)])
-        return ATPathSpecMatchResultUnknown;
-
-    return ATPathSpecMatchResultMatched;
-}
-
-- (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options {
-    return ATPathSpecSyntaxOptions_QuoteIfNeeded(ATPathSpecEntryType_AdjustTrailingSlashInPathString(_type, [NSString stringWithFormat:@"*%@", _suffix]), options);
-}
-
-- (BOOL)isComplexExpression {
-    return NO;
-}
-
-@end
-
-
-@implementation ATPatternPathSpec {
-    NSString *_regex;
-}
-
-@synthesize pattern = _pattern;
-@synthesize type = _type;
-
-- (id)initWithPattern:(NSString *)pattern type:(ATPathSpecEntryType)type {
-    self = [super init];
-    if (self) {
-        _pattern = [pattern copy];
-        _type = type;
-        _regex = ATPathSpec_RegexFromPatternString(_pattern);
-    }
-    return self;
-}
-
-- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type {
-    if (type != _type)
-        return ATPathSpecMatchResultUnknown;
-
-    NSString *name = [path lastPathComponent];
-    return [name isMatchedByRegex:_regex];
-}
-
-- (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options {
-    return ATPathSpecSyntaxOptions_QuoteIfNeeded(ATPathSpecEntryType_AdjustTrailingSlashInPathString(_type, _pattern), options);
+    return ATPathSpecEntryType_AdjustTrailingSlashInPathString(_type, [_mask stringRepresentationWithSyntaxOptions:options]);
 }
 
 - (BOOL)isComplexExpression {
