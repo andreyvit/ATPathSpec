@@ -1,6 +1,6 @@
-
 #import "ATPathSpec.h"
 
+NS_ASSUME_NONNULL_BEGIN
 
 NSString *ATPathSpec_StringByEscapingRegex(NSString *regex);
 NSRegularExpression *ATPathSpec_RegexFromPatternString(NSString *pattern, ATPathSpecSyntaxOptions options);
@@ -56,7 +56,7 @@ typedef enum {
     ATPathSpecTokenTypeCloseParen,
 } ATPathSpecTokenType;
 
-typedef void (^ATPathSpecTokenBlock)(ATPathSpecTokenType type, NSRange range, NSString *decoded);
+typedef void (^ATPathSpecTokenBlock)(ATPathSpecTokenType type, NSRange range, NSString *_Nullable decoded);
 
 // spec     -> subspec (operator subspec)*
 // operator -> "\n" | "," | "|" | "&"
@@ -119,3 +119,5 @@ typedef void (^ATPathSpecTokenBlock)(ATPathSpecTokenType type, NSRange range, NS
 @property(nonatomic, readonly) NSArray *specs;
 
 @end
+
+NS_ASSUME_NONNULL_END

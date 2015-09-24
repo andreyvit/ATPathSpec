@@ -1,9 +1,10 @@
-
 @import Foundation;
 
 
 //FOUNDATION_EXPORT double ATPathSpecVersionNumber;
 //FOUNDATION_EXPORT const unsigned char ATPathSpecVersionString[];
+
+NS_ASSUME_NONNULL_BEGIN
 
 
 typedef NS_ENUM(NSInteger, ATPathSpecMatchResult) {
@@ -67,7 +68,7 @@ extern NSString *const ATPathSpecMatchInfoMatchedStaticName;
 
 + (ATMask *)maskWithString:(NSString *)string syntaxOptions:(ATPathSpecSyntaxOptions)options;
 
-- (BOOL)matchesName:(NSString *)name matchInfo:(NSDictionary **)matchInfo;
+- (BOOL)matchesName:(NSString *)name matchInfo:(NSDictionary *_Nullable *_Nullable)matchInfo;
 
 - (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options;
 
@@ -82,18 +83,18 @@ extern NSString *const ATPathSpecMatchInfoMatchedStaticName;
 + (ATPathSpec *)emptyPathSpec;
 
 + (ATPathSpec *)pathSpecMatchingNameMask:(ATMask *)mask type:(ATPathSpecEntryType)type syntaxOptions:(ATPathSpecSyntaxOptions)options;
-+ (ATPathSpec *)pathSpecMatchingPathMasks:(NSArray *)masks type:(ATPathSpecEntryType)type syntaxOptions:(ATPathSpecSyntaxOptions)options;
++ (ATPathSpec *)pathSpecMatchingPathMasks:(NSArray<ATMask *> *)masks type:(ATPathSpecEntryType)type syntaxOptions:(ATPathSpecSyntaxOptions)options;
 + (ATPathSpec *)pathSpecMatchingPath:(NSString *)path type:(ATPathSpecEntryType)type syntaxOptions:(ATPathSpecSyntaxOptions)options;
-+ (ATPathSpec *)pathSpecMatchingUnionOf:(NSArray *)specs;
-+ (ATPathSpec *)pathSpecMatchingIntersectionOf:(NSArray *)specs;
++ (ATPathSpec *)pathSpecMatchingUnionOf:(NSArray<ATPathSpec *> *)specs;
++ (ATPathSpec *)pathSpecMatchingIntersectionOf:(NSArray<ATPathSpec *> *)specs;
 
 - (ATPathSpec *)negatedPathSpec;
 
-- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type matchInfo:(NSDictionary **)matchInfo;
+- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type matchInfo:(NSDictionary *_Nullable *_Nullable)matchInfo;
 - (BOOL)matchesPath:(NSString *)path type:(ATPathSpecEntryType)type;
 - (NSDictionary *)matchInfoForPath:(NSString *)path type:(ATPathSpecEntryType)type;
 
-- (NSArray *)matchingPathsInArray:(NSArray *)paths type:(ATPathSpecEntryType)type;
+- (NSArray<NSString *> *)matchingPathsInArray:(NSArray<NSString *> *)paths type:(ATPathSpecEntryType)type;
 
 - (NSString *)stringRepresentationWithSyntaxOptions:(ATPathSpecSyntaxOptions)options;
 - (NSString *)description; // gives a string representation in Extended syntax
@@ -103,3 +104,5 @@ extern NSString *const ATPathSpecMatchInfoMatchedStaticName;
 + (NSString *)describeTokensInString:(NSString *)string withSyntaxOptions:(ATPathSpecSyntaxOptions)options;  // for tests and debugging
 
 @end
+
+NS_ASSUME_NONNULL_END

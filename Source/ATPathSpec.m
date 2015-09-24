@@ -2,6 +2,8 @@
 #import "ATPathSpec.h"
 #import "ATPathSpecPrivate.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 
 NSString *const ATPathSpecErrorDomain = @"ATPathSpecErrorDomain";
 NSString *const ATPathSpecErrorSpecStringKey = @"ATPathSpecErrorSpecString";
@@ -244,7 +246,7 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
     return self;
 }
 
-- (BOOL)matchesName:(NSString *)name matchInfo:(NSDictionary **)matchInfo {
+- (BOOL)matchesName:(NSString *)name matchInfo:(NSDictionary *_Nullable *_Nullable)matchInfo {
     if ([_name isEqualToString:name]) {
         if (matchInfo)
             *matchInfo = @{ATPathSpecMatchInfoMatchedStaticName: _name};
@@ -272,7 +274,7 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
     return self;
 }
 
-- (BOOL)matchesName:(NSString *)name matchInfo:(NSDictionary **)matchInfo {
+- (BOOL)matchesName:(NSString *)name matchInfo:(NSDictionary *_Nullable *_Nullable)matchInfo {
     NSUInteger nameLen = name.length, suffixLen = _suffix.length;
     if (nameLen < _suffix.length || NSOrderedSame != [name compare:_suffix options:NSLiteralSearch range:NSMakeRange(nameLen - suffixLen, suffixLen)])
         return NO;
@@ -306,7 +308,7 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
     return self;
 }
 
-- (BOOL)matchesName:(NSString *)name matchInfo:(NSDictionary **)matchInfo {
+- (BOOL)matchesName:(NSString *)name matchInfo:(NSDictionary *_Nullable *_Nullable)matchInfo {
     if ([_regex firstMatchInString:name options:0 range:NSMakeRange(0, name.length)]) {
         if (matchInfo) {
             if (_staticSuffix)
@@ -1087,3 +1089,5 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
 }
 
 @end
+
+NS_ASSUME_NONNULL_END
