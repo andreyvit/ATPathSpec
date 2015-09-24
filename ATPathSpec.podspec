@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "ATPathSpec"
-  s.version          = "1.1.0"
+  s.version          = "1.2.0"
   s.summary          = "Path matching library with a configurable syntax (shell glob, gitignore & custom)"
 
   s.description      = <<-DESC
