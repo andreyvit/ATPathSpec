@@ -43,6 +43,8 @@
 		43D6A9651BB440DC00296B03 /* ATPathSpecTokenizerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATPathSpecTokenizerTests.m; sourceTree = "<group>"; };
 		43D6A96D1BB440E400296B03 /* Info-Tests.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Tests.plist"; sourceTree = "<group>"; };
 		43D6A96E1BB440E400296B03 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		43D6A96F1BB4419E00296B03 /* ATPathSpec.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = ATPathSpec.podspec; sourceTree = "<group>"; };
+		43D6A9701BB4419E00296B03 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,8 @@
 		43D6A9341BB4407900296B03 = {
 			isa = PBXGroup;
 			children = (
+				43D6A9701BB4419E00296B03 /* README.md */,
+				43D6A96F1BB4419E00296B03 /* ATPathSpec.podspec */,
 				43D6A9581BB440D000296B03 /* Source */,
 				43D6A95F1BB440DC00296B03 /* Tests */,
 				43D6A96C1BB440E400296B03 /* Metadata */,
