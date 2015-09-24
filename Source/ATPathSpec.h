@@ -51,8 +51,8 @@ NSString *ATPathSpecAddTrailingSlash(NSString *path);
 NSString *ATPathSpecRemoveTrailingSlash(NSString *path);
 
 
-NSString *const ATPathSpecErrorDomain;
-NSString *const ATPathSpecErrorSpecStringKey;
+extern NSString *const ATPathSpecErrorDomain;
+extern NSString *const ATPathSpecErrorSpecStringKey;
 
 typedef NS_ENUM(NSInteger, ATPathSpecErrorCode) {
     ATPathSpecErrorCodeInvalidSpecString = 1,
