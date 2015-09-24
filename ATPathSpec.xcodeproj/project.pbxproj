@@ -7,145 +7,137 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		43931665198523C900685024 /* ATPathSpec.h in Headers */ = {isa = PBXBuildFile; fileRef = 43931664198523C900685024 /* ATPathSpec.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4393166B198523C900685024 /* ATPathSpec.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4393165F198523C900685024 /* ATPathSpec.framework */; };
-		439316861985241C00685024 /* ATPathSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 439316841985241C00685024 /* ATPathSpec.m */; };
-		439316871985241C00685024 /* ATPathSpecPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 439316851985241C00685024 /* ATPathSpecPrivate.h */; };
-		4393168E1985244800685024 /* ATPathSpecIntroTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 439316881985244800685024 /* ATPathSpecIntroTests.m */; };
-		4393168F1985244800685024 /* ATPathSpecMatchInfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 439316891985244800685024 /* ATPathSpecMatchInfoTests.m */; };
-		439316901985244800685024 /* ATPathSpecMetadataTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4393168A1985244800685024 /* ATPathSpecMetadataTests.m */; };
-		439316911985244800685024 /* ATPathSpecMultiComponentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4393168B1985244800685024 /* ATPathSpecMultiComponentTests.m */; };
-		439316921985244800685024 /* ATPathSpecSingleComponentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4393168C1985244800685024 /* ATPathSpecSingleComponentTests.m */; };
-		439316931985244800685024 /* ATPathSpecTokenizerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4393168D1985244800685024 /* ATPathSpecTokenizerTests.m */; };
+		43D6A9491BB4407A00296B03 /* ATPathSpec.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D6A93E1BB4407900296B03 /* ATPathSpec.framework */; settings = {ASSET_TAGS = (); }; };
+		43D6A95C1BB440D000296B03 /* ATPathSpec.h in Headers */ = {isa = PBXBuildFile; fileRef = 43D6A9591BB440D000296B03 /* ATPathSpec.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		43D6A95D1BB440D000296B03 /* ATPathSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D6A95A1BB440D000296B03 /* ATPathSpec.m */; settings = {ASSET_TAGS = (); }; };
+		43D6A95E1BB440D000296B03 /* ATPathSpecPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 43D6A95B1BB440D000296B03 /* ATPathSpecPrivate.h */; settings = {ASSET_TAGS = (); }; };
+		43D6A9661BB440DC00296B03 /* ATPathSpecIntroTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D6A9601BB440DC00296B03 /* ATPathSpecIntroTests.m */; settings = {ASSET_TAGS = (); }; };
+		43D6A9671BB440DC00296B03 /* ATPathSpecMatchInfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D6A9611BB440DC00296B03 /* ATPathSpecMatchInfoTests.m */; settings = {ASSET_TAGS = (); }; };
+		43D6A9681BB440DC00296B03 /* ATPathSpecMetadataTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D6A9621BB440DC00296B03 /* ATPathSpecMetadataTests.m */; settings = {ASSET_TAGS = (); }; };
+		43D6A9691BB440DC00296B03 /* ATPathSpecMultiComponentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D6A9631BB440DC00296B03 /* ATPathSpecMultiComponentTests.m */; settings = {ASSET_TAGS = (); }; };
+		43D6A96A1BB440DC00296B03 /* ATPathSpecSingleComponentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D6A9641BB440DC00296B03 /* ATPathSpecSingleComponentTests.m */; settings = {ASSET_TAGS = (); }; };
+		43D6A96B1BB440DC00296B03 /* ATPathSpecTokenizerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D6A9651BB440DC00296B03 /* ATPathSpecTokenizerTests.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		4393166C198523C900685024 /* PBXContainerItemProxy */ = {
+		43D6A94A1BB4407A00296B03 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 43931656198523C800685024 /* Project object */;
+			containerPortal = 43D6A9351BB4407900296B03 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 4393165E198523C900685024;
+			remoteGlobalIDString = 43D6A93D1BB4407900296B03;
 			remoteInfo = ATPathSpec;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4393165F198523C900685024 /* ATPathSpec.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ATPathSpec.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		43931663198523C900685024 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		43931664198523C900685024 /* ATPathSpec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ATPathSpec.h; sourceTree = "<group>"; };
-		4393166A198523C900685024 /* ATPathSpecTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ATPathSpecTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		43931670198523C900685024 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		439316841985241C00685024 /* ATPathSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATPathSpec.m; sourceTree = "<group>"; };
-		439316851985241C00685024 /* ATPathSpecPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATPathSpecPrivate.h; sourceTree = "<group>"; };
-		439316881985244800685024 /* ATPathSpecIntroTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ATPathSpecIntroTests.m; path = ATPathSpecTests/ATPathSpecIntroTests.m; sourceTree = SOURCE_ROOT; };
-		439316891985244800685024 /* ATPathSpecMatchInfoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ATPathSpecMatchInfoTests.m; path = ATPathSpecTests/ATPathSpecMatchInfoTests.m; sourceTree = SOURCE_ROOT; };
-		4393168A1985244800685024 /* ATPathSpecMetadataTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ATPathSpecMetadataTests.m; path = ATPathSpecTests/ATPathSpecMetadataTests.m; sourceTree = SOURCE_ROOT; };
-		4393168B1985244800685024 /* ATPathSpecMultiComponentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ATPathSpecMultiComponentTests.m; path = ATPathSpecTests/ATPathSpecMultiComponentTests.m; sourceTree = SOURCE_ROOT; };
-		4393168C1985244800685024 /* ATPathSpecSingleComponentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ATPathSpecSingleComponentTests.m; path = ATPathSpecTests/ATPathSpecSingleComponentTests.m; sourceTree = SOURCE_ROOT; };
-		4393168D1985244800685024 /* ATPathSpecTokenizerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ATPathSpecTokenizerTests.m; path = ATPathSpecTests/ATPathSpecTokenizerTests.m; sourceTree = SOURCE_ROOT; };
+		43D6A93E1BB4407900296B03 /* ATPathSpec.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ATPathSpec.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D6A9481BB4407A00296B03 /* ATPathSpecTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ATPathSpecTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D6A9591BB440D000296B03 /* ATPathSpec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATPathSpec.h; sourceTree = "<group>"; };
+		43D6A95A1BB440D000296B03 /* ATPathSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATPathSpec.m; sourceTree = "<group>"; };
+		43D6A95B1BB440D000296B03 /* ATPathSpecPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATPathSpecPrivate.h; sourceTree = "<group>"; };
+		43D6A9601BB440DC00296B03 /* ATPathSpecIntroTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATPathSpecIntroTests.m; sourceTree = "<group>"; };
+		43D6A9611BB440DC00296B03 /* ATPathSpecMatchInfoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATPathSpecMatchInfoTests.m; sourceTree = "<group>"; };
+		43D6A9621BB440DC00296B03 /* ATPathSpecMetadataTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATPathSpecMetadataTests.m; sourceTree = "<group>"; };
+		43D6A9631BB440DC00296B03 /* ATPathSpecMultiComponentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATPathSpecMultiComponentTests.m; sourceTree = "<group>"; };
+		43D6A9641BB440DC00296B03 /* ATPathSpecSingleComponentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATPathSpecSingleComponentTests.m; sourceTree = "<group>"; };
+		43D6A9651BB440DC00296B03 /* ATPathSpecTokenizerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATPathSpecTokenizerTests.m; sourceTree = "<group>"; };
+		43D6A96D1BB440E400296B03 /* Info-Tests.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Tests.plist"; sourceTree = "<group>"; };
+		43D6A96E1BB440E400296B03 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		4393165B198523C900685024 /* Frameworks */ = {
+		43D6A93A1BB4407900296B03 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		43931667198523C900685024 /* Frameworks */ = {
+		43D6A9451BB4407A00296B03 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4393166B198523C900685024 /* ATPathSpec.framework in Frameworks */,
+				43D6A9491BB4407A00296B03 /* ATPathSpec.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		43931655198523C800685024 = {
+		43D6A9341BB4407900296B03 = {
 			isa = PBXGroup;
 			children = (
-				43931661198523C900685024 /* ATPathSpec */,
-				4393166E198523C900685024 /* ATPathSpecTests */,
-				43931660198523C900685024 /* Products */,
+				43D6A9581BB440D000296B03 /* Source */,
+				43D6A95F1BB440DC00296B03 /* Tests */,
+				43D6A96C1BB440E400296B03 /* Metadata */,
+				43D6A93F1BB4407900296B03 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		43931660198523C900685024 /* Products */ = {
+		43D6A93F1BB4407900296B03 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4393165F198523C900685024 /* ATPathSpec.framework */,
-				4393166A198523C900685024 /* ATPathSpecTests.xctest */,
+				43D6A93E1BB4407900296B03 /* ATPathSpec.framework */,
+				43D6A9481BB4407A00296B03 /* ATPathSpecTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		43931661198523C900685024 /* ATPathSpec */ = {
+		43D6A9581BB440D000296B03 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				43931664198523C900685024 /* ATPathSpec.h */,
-				439316841985241C00685024 /* ATPathSpec.m */,
-				439316851985241C00685024 /* ATPathSpecPrivate.h */,
-				43931662198523C900685024 /* Supporting Files */,
+				43D6A9591BB440D000296B03 /* ATPathSpec.h */,
+				43D6A95A1BB440D000296B03 /* ATPathSpec.m */,
+				43D6A95B1BB440D000296B03 /* ATPathSpecPrivate.h */,
 			);
-			path = ATPathSpec;
+			path = Source;
 			sourceTree = "<group>";
 		};
-		43931662198523C900685024 /* Supporting Files */ = {
+		43D6A95F1BB440DC00296B03 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				43931663198523C900685024 /* Info.plist */,
+				43D6A9601BB440DC00296B03 /* ATPathSpecIntroTests.m */,
+				43D6A9611BB440DC00296B03 /* ATPathSpecMatchInfoTests.m */,
+				43D6A9621BB440DC00296B03 /* ATPathSpecMetadataTests.m */,
+				43D6A9631BB440DC00296B03 /* ATPathSpecMultiComponentTests.m */,
+				43D6A9641BB440DC00296B03 /* ATPathSpecSingleComponentTests.m */,
+				43D6A9651BB440DC00296B03 /* ATPathSpecTokenizerTests.m */,
 			);
-			name = "Supporting Files";
+			path = Tests;
 			sourceTree = "<group>";
 		};
-		4393166E198523C900685024 /* ATPathSpecTests */ = {
+		43D6A96C1BB440E400296B03 /* Metadata */ = {
 			isa = PBXGroup;
 			children = (
-				439316881985244800685024 /* ATPathSpecIntroTests.m */,
-				439316891985244800685024 /* ATPathSpecMatchInfoTests.m */,
-				4393168A1985244800685024 /* ATPathSpecMetadataTests.m */,
-				4393168B1985244800685024 /* ATPathSpecMultiComponentTests.m */,
-				4393168C1985244800685024 /* ATPathSpecSingleComponentTests.m */,
-				4393168D1985244800685024 /* ATPathSpecTokenizerTests.m */,
-				4393166F198523C900685024 /* Supporting Files */,
+				43D6A96D1BB440E400296B03 /* Info-Tests.plist */,
+				43D6A96E1BB440E400296B03 /* Info.plist */,
 			);
-			path = ATPathSpecTests;
-			sourceTree = "<group>";
-		};
-		4393166F198523C900685024 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				43931670198523C900685024 /* Info.plist */,
-			);
-			name = "Supporting Files";
+			path = Metadata;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		4393165C198523C900685024 /* Headers */ = {
+		43D6A93B1BB4407900296B03 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43931665198523C900685024 /* ATPathSpec.h in Headers */,
-				439316871985241C00685024 /* ATPathSpecPrivate.h in Headers */,
+				43D6A95C1BB440D000296B03 /* ATPathSpec.h in Headers */,
+				43D6A95E1BB440D000296B03 /* ATPathSpecPrivate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		4393165E198523C900685024 /* ATPathSpec */ = {
+		43D6A93D1BB4407900296B03 /* ATPathSpec */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 43931675198523C900685024 /* Build configuration list for PBXNativeTarget "ATPathSpec" */;
+			buildConfigurationList = 43D6A9521BB4407A00296B03 /* Build configuration list for PBXNativeTarget "ATPathSpec" */;
 			buildPhases = (
-				4393165A198523C900685024 /* Sources */,
-				4393165B198523C900685024 /* Frameworks */,
-				4393165C198523C900685024 /* Headers */,
-				4393165D198523C900685024 /* Resources */,
+				43D6A9391BB4407900296B03 /* Sources */,
+				43D6A93A1BB4407900296B03 /* Frameworks */,
+				43D6A93B1BB4407900296B03 /* Headers */,
+				43D6A93C1BB4407900296B03 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -153,72 +145,71 @@
 			);
 			name = ATPathSpec;
 			productName = ATPathSpec;
-			productReference = 4393165F198523C900685024 /* ATPathSpec.framework */;
+			productReference = 43D6A93E1BB4407900296B03 /* ATPathSpec.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		43931669198523C900685024 /* ATPathSpecTests */ = {
+		43D6A9471BB4407A00296B03 /* ATPathSpecTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 43931678198523C900685024 /* Build configuration list for PBXNativeTarget "ATPathSpecTests" */;
+			buildConfigurationList = 43D6A9551BB4407A00296B03 /* Build configuration list for PBXNativeTarget "ATPathSpecTests" */;
 			buildPhases = (
-				43931666198523C900685024 /* Sources */,
-				43931667198523C900685024 /* Frameworks */,
-				43931668198523C900685024 /* Resources */,
+				43D6A9441BB4407A00296B03 /* Sources */,
+				43D6A9451BB4407A00296B03 /* Frameworks */,
+				43D6A9461BB4407A00296B03 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				4393166D198523C900685024 /* PBXTargetDependency */,
+				43D6A94B1BB4407A00296B03 /* PBXTargetDependency */,
 			);
 			name = ATPathSpecTests;
 			productName = ATPathSpecTests;
-			productReference = 4393166A198523C900685024 /* ATPathSpecTests.xctest */;
+			productReference = 43D6A9481BB4407A00296B03 /* ATPathSpecTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		43931656198523C800685024 /* Project object */ = {
+		43D6A9351BB4407900296B03 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Andrey Tarantsov";
 				TargetAttributes = {
-					4393165E198523C900685024 = {
-						CreatedOnToolsVersion = 6.0;
+					43D6A93D1BB4407900296B03 = {
+						CreatedOnToolsVersion = 7.0;
 					};
-					43931669198523C900685024 = {
-						CreatedOnToolsVersion = 6.0;
-						TestTargetID = 4393165E198523C900685024;
+					43D6A9471BB4407A00296B03 = {
+						CreatedOnToolsVersion = 7.0;
 					};
 				};
 			};
-			buildConfigurationList = 43931659198523C800685024 /* Build configuration list for PBXProject "ATPathSpec" */;
+			buildConfigurationList = 43D6A9381BB4407900296B03 /* Build configuration list for PBXProject "ATPathSpec" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 43931655198523C800685024;
-			productRefGroup = 43931660198523C900685024 /* Products */;
+			mainGroup = 43D6A9341BB4407900296B03;
+			productRefGroup = 43D6A93F1BB4407900296B03 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4393165E198523C900685024 /* ATPathSpec */,
-				43931669198523C900685024 /* ATPathSpecTests */,
+				43D6A93D1BB4407900296B03 /* ATPathSpec */,
+				43D6A9471BB4407A00296B03 /* ATPathSpecTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		4393165D198523C900685024 /* Resources */ = {
+		43D6A93C1BB4407900296B03 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		43931668198523C900685024 /* Resources */ = {
+		43D6A9461BB4407A00296B03 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -228,39 +219,39 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		4393165A198523C900685024 /* Sources */ = {
+		43D6A9391BB4407900296B03 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				439316861985241C00685024 /* ATPathSpec.m in Sources */,
+				43D6A95D1BB440D000296B03 /* ATPathSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		43931666198523C900685024 /* Sources */ = {
+		43D6A9441BB4407A00296B03 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				439316911985244800685024 /* ATPathSpecMultiComponentTests.m in Sources */,
-				439316921985244800685024 /* ATPathSpecSingleComponentTests.m in Sources */,
-				439316931985244800685024 /* ATPathSpecTokenizerTests.m in Sources */,
-				439316901985244800685024 /* ATPathSpecMetadataTests.m in Sources */,
-				4393168F1985244800685024 /* ATPathSpecMatchInfoTests.m in Sources */,
-				4393168E1985244800685024 /* ATPathSpecIntroTests.m in Sources */,
+				43D6A9691BB440DC00296B03 /* ATPathSpecMultiComponentTests.m in Sources */,
+				43D6A96A1BB440DC00296B03 /* ATPathSpecSingleComponentTests.m in Sources */,
+				43D6A96B1BB440DC00296B03 /* ATPathSpecTokenizerTests.m in Sources */,
+				43D6A9681BB440DC00296B03 /* ATPathSpecMetadataTests.m in Sources */,
+				43D6A9671BB440DC00296B03 /* ATPathSpecMatchInfoTests.m in Sources */,
+				43D6A9661BB440DC00296B03 /* ATPathSpecIntroTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		4393166D198523C900685024 /* PBXTargetDependency */ = {
+		43D6A94B1BB4407A00296B03 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4393165E198523C900685024 /* ATPathSpec */;
-			targetProxy = 4393166C198523C900685024 /* PBXContainerItemProxy */;
+			target = 43D6A93D1BB4407900296B03 /* ATPathSpec */;
+			targetProxy = 43D6A94A1BB4407A00296B03 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		43931673198523C900685024 /* Debug */ = {
+		43D6A9501BB4407A00296B03 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -279,22 +270,24 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -303,7 +296,7 @@
 			};
 			name = Debug;
 		};
-		43931674198523C900685024 /* Release */ = {
+		43D6A9511BB4407A00296B03 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -320,19 +313,20 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -340,7 +334,7 @@
 			};
 			name = Release;
 		};
-		43931676198523C900685024 /* Debug */ = {
+		43D6A9531BB4407A00296B03 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
@@ -349,15 +343,16 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = ATPathSpec/Info.plist;
+				INFOPLIST_FILE = Metadata/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tarantsov.ATPathSpec;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
-		43931677198523C900685024 /* Release */ = {
+		43D6A9541BB4407A00296B03 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
@@ -366,42 +361,33 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = ATPathSpec/Info.plist;
+				INFOPLIST_FILE = Metadata/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tarantsov.ATPathSpec;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
-		43931679198523C900685024 /* Debug */ = {
+		43D6A9561BB4407A00296B03 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = ATPathSpecTests/Info.plist;
+				INFOPLIST_FILE = "Metadata/Info-Tests.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tarantsov.ATPathSpecTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
-		4393167A198523C900685024 /* Release */ = {
+		43D6A9571BB4407A00296B03 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = ATPathSpecTests/Info.plist;
+				INFOPLIST_FILE = "Metadata/Info-Tests.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tarantsov.ATPathSpecTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -409,32 +395,34 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		43931659198523C800685024 /* Build configuration list for PBXProject "ATPathSpec" */ = {
+		43D6A9381BB4407900296B03 /* Build configuration list for PBXProject "ATPathSpec" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				43931673198523C900685024 /* Debug */,
-				43931674198523C900685024 /* Release */,
+				43D6A9501BB4407A00296B03 /* Debug */,
+				43D6A9511BB4407A00296B03 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		43931675198523C900685024 /* Build configuration list for PBXNativeTarget "ATPathSpec" */ = {
+		43D6A9521BB4407A00296B03 /* Build configuration list for PBXNativeTarget "ATPathSpec" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				43931676198523C900685024 /* Debug */,
-				43931677198523C900685024 /* Release */,
+				43D6A9531BB4407A00296B03 /* Debug */,
+				43D6A9541BB4407A00296B03 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
-		43931678198523C900685024 /* Build configuration list for PBXNativeTarget "ATPathSpecTests" */ = {
+		43D6A9551BB4407A00296B03 /* Build configuration list for PBXNativeTarget "ATPathSpecTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				43931679198523C900685024 /* Debug */,
-				4393167A198523C900685024 /* Release */,
+				43D6A9561BB4407A00296B03 /* Debug */,
+				43D6A9571BB4407A00296B03 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 43931656198523C800685024 /* Project object */;
+	rootObject = 43D6A9351BB4407900296B03 /* Project object */;
 }
