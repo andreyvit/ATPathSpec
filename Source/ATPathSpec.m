@@ -719,7 +719,7 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
     return [self matchResultForPath:path type:type matchInfo:NULL] == ATPathSpecMatchResultMatched;
 }
 
-- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type matchInfo:(NSDictionary **)matchInfo {
+- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type matchInfo:(NSDictionary<NSString *, id> **)matchInfo {
     abort();
 }
 
@@ -791,7 +791,7 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
 
 @implementation ATEmptyPathSpec : ATPathSpec
 
-- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type matchInfo:(NSDictionary **)matchInfo {
+- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type matchInfo:(NSDictionary<NSString *, id> **)matchInfo {
     return NO;
 }
 
@@ -833,7 +833,7 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
     return self;
 }
 
-- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type matchInfo:(NSDictionary **)matchInfo {
+- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type matchInfo:(NSDictionary<NSString *, id> **)matchInfo {
     if (_fuzzyEnabled && (_type == ATPathSpecEntryTypeFolder || _type == ATPathSpecEntryTypeFileOrFolder)) {
         NSArray *components = path.pathComponents;
         components = [components subarrayWithRange:NSMakeRange(0, components.count - 1)];
@@ -885,7 +885,7 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
     return self;
 }
 
-- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type matchInfo:(NSDictionary **)matchInfo {
+- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type matchInfo:(NSDictionary<NSString *, id> **)matchInfo {
     BOOL fuzzy = (_fuzzyEnabled && (_type == ATPathSpecEntryTypeFolder || _type == ATPathSpecEntryTypeFileOrFolder));
     BOOL typesCompatible = ATPathSpecEntryType_Match(_type, type);
 
@@ -959,7 +959,7 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
     return _spec;
 }
 
-- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type matchInfo:(NSDictionary **)matchInfo {
+- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type matchInfo:(NSDictionary<NSString *, id> **)matchInfo {
     if ([_spec matchResultForPath:path type:type matchInfo:NULL] != ATPathSpecMatchResultMatched) {
         if (matchInfo)
             *matchInfo = @{};
@@ -994,7 +994,7 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
     return self;
 }
 
-- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type matchInfo:(NSDictionary **)matchInfo {
+- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type matchInfo:(NSDictionary<NSString *, id> **)matchInfo {
     for (ATPathSpec *spec in _specs) {
         ATPathSpecMatchResult result = [spec matchResultForPath:path type:type matchInfo:matchInfo];
         if (result == ATPathSpecMatchResultMatched)
@@ -1032,7 +1032,7 @@ NSString *ATPathSpecSyntaxOptions_UnquoteIfNeeded(NSString *string, ATPathSpecSy
     return self;
 }
 
-- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type matchInfo:(NSDictionary **)matchInfo {
+- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type matchInfo:(NSDictionary<NSString *, id> **)matchInfo {
     NSDictionary *mergedMatchInfo;
     if (matchInfo)
         mergedMatchInfo = @{};

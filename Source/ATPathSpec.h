@@ -90,7 +90,7 @@ extern NSString *const ATPathSpecMatchInfoMatchedStaticName;
 
 - (ATPathSpec *)negatedPathSpec;
 
-- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type matchInfo:(NSDictionary *_Nullable *_Nullable)matchInfo;
+- (ATPathSpecMatchResult)matchResultForPath:(NSString *)path type:(ATPathSpecEntryType)type matchInfo:(NSDictionary<NSString *, id> *_Nullable *_Nullable)matchInfo;
 - (BOOL)matchesPath:(NSString *)path type:(ATPathSpecEntryType)type;
 - (NSDictionary *)matchInfoForPath:(NSString *)path type:(ATPathSpecEntryType)type;
 

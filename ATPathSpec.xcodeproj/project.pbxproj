@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4334FBBF1BC448BF00276534 /* RelPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4334FBBE1BC448BF00276534 /* RelPath.swift */; settings = {ASSET_TAGS = (); }; };
+		4334FBC31BC44DAD00276534 /* PathGlobals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4334FBC21BC44DAD00276534 /* PathGlobals.swift */; settings = {ASSET_TAGS = (); }; };
+		4334FBC91BC4687500276534 /* RelPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4334FBC81BC4687500276534 /* RelPathTests.swift */; settings = {ASSET_TAGS = (); }; };
+		43C3751D1BCAF8CA000A1C37 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C3751C1BCAF8CA000A1C37 /* StringExtensions.swift */; settings = {ASSET_TAGS = (); }; };
 		43D6A9491BB4407A00296B03 /* ATPathSpec.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D6A93E1BB4407900296B03 /* ATPathSpec.framework */; settings = {ASSET_TAGS = (); }; };
 		43D6A95C1BB440D000296B03 /* ATPathSpec.h in Headers */ = {isa = PBXBuildFile; fileRef = 43D6A9591BB440D000296B03 /* ATPathSpec.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		43D6A95D1BB440D000296B03 /* ATPathSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D6A95A1BB440D000296B03 /* ATPathSpec.m */; settings = {ASSET_TAGS = (); }; };
@@ -30,6 +34,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4334FBBE1BC448BF00276534 /* RelPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelPath.swift; sourceTree = "<group>"; };
+		4334FBC21BC44DAD00276534 /* PathGlobals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathGlobals.swift; sourceTree = "<group>"; };
+		4334FBC81BC4687500276534 /* RelPathTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelPathTests.swift; sourceTree = "<group>"; };
+		43C375001BC71568000A1C37 /* PathNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathNode.swift; sourceTree = "<group>"; };
+		43C375011BC71568000A1C37 /* PathNodeChild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathNodeChild.swift; sourceTree = "<group>"; };
+		43C375021BC71568000A1C37 /* PathRoot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathRoot.swift; sourceTree = "<group>"; };
+		43C3751C1BCAF8CA000A1C37 /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		43D6A93E1BB4407900296B03 /* ATPathSpec.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ATPathSpec.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D6A9481BB4407A00296B03 /* ATPathSpecTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ATPathSpecTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D6A9591BB440D000296B03 /* ATPathSpec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATPathSpec.h; sourceTree = "<group>"; };
@@ -66,12 +77,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		43C374FF1BC71568000A1C37 /* ExperimentalSource */ = {
+			isa = PBXGroup;
+			children = (
+				43C375001BC71568000A1C37 /* PathNode.swift */,
+				43C375011BC71568000A1C37 /* PathNodeChild.swift */,
+				43C375021BC71568000A1C37 /* PathRoot.swift */,
+			);
+			path = ExperimentalSource;
+			sourceTree = "<group>";
+		};
 		43D6A9341BB4407900296B03 = {
 			isa = PBXGroup;
 			children = (
 				43D6A9701BB4419E00296B03 /* README.md */,
 				43D6A96F1BB4419E00296B03 /* ATPathSpec.podspec */,
 				43D6A9581BB440D000296B03 /* Source */,
+				43C374FF1BC71568000A1C37 /* ExperimentalSource */,
 				43D6A95F1BB440DC00296B03 /* Tests */,
 				43D6A96C1BB440E400296B03 /* Metadata */,
 				43D6A93F1BB4407900296B03 /* Products */,
@@ -93,6 +115,9 @@
 				43D6A9591BB440D000296B03 /* ATPathSpec.h */,
 				43D6A95A1BB440D000296B03 /* ATPathSpec.m */,
 				43D6A95B1BB440D000296B03 /* ATPathSpecPrivate.h */,
+				4334FBC21BC44DAD00276534 /* PathGlobals.swift */,
+				4334FBBE1BC448BF00276534 /* RelPath.swift */,
+				43C3751C1BCAF8CA000A1C37 /* StringExtensions.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -106,6 +131,7 @@
 				43D6A9631BB440DC00296B03 /* ATPathSpecMultiComponentTests.m */,
 				43D6A9641BB440DC00296B03 /* ATPathSpecSingleComponentTests.m */,
 				43D6A9651BB440DC00296B03 /* ATPathSpecTokenizerTests.m */,
+				4334FBC81BC4687500276534 /* RelPathTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -176,6 +202,7 @@
 		43D6A9351BB4407900296B03 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Andrey Tarantsov";
 				TargetAttributes = {
@@ -227,6 +254,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4334FBC31BC44DAD00276534 /* PathGlobals.swift in Sources */,
+				4334FBBF1BC448BF00276534 /* RelPath.swift in Sources */,
+				43C3751D1BCAF8CA000A1C37 /* StringExtensions.swift in Sources */,
 				43D6A95D1BB440D000296B03 /* ATPathSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -240,6 +270,7 @@
 				43D6A96B1BB440DC00296B03 /* ATPathSpecTokenizerTests.m in Sources */,
 				43D6A9681BB440DC00296B03 /* ATPathSpecMetadataTests.m in Sources */,
 				43D6A9671BB440DC00296B03 /* ATPathSpecMatchInfoTests.m in Sources */,
+				4334FBC91BC4687500276534 /* RelPathTests.swift in Sources */,
 				43D6A9661BB440DC00296B03 /* ATPathSpecIntroTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -341,6 +372,7 @@
 		43D6A9531BB4407A00296B03 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -353,12 +385,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tarantsov.ATPathSpec;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		43D6A9541BB4407A00296B03 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -377,17 +411,20 @@
 		43D6A9561BB4407A00296B03 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "Metadata/Info-Tests.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tarantsov.ATPathSpecTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		43D6A9571BB4407A00296B03 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "Metadata/Info-Tests.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
