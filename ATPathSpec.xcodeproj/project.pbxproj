@@ -7,20 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4334FBBF1BC448BF00276534 /* RelPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4334FBBE1BC448BF00276534 /* RelPath.swift */; settings = {ASSET_TAGS = (); }; };
-		4334FBC31BC44DAD00276534 /* PathGlobals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4334FBC21BC44DAD00276534 /* PathGlobals.swift */; settings = {ASSET_TAGS = (); }; };
-		4334FBC91BC4687500276534 /* RelPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4334FBC81BC4687500276534 /* RelPathTests.swift */; settings = {ASSET_TAGS = (); }; };
-		43C3751D1BCAF8CA000A1C37 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C3751C1BCAF8CA000A1C37 /* StringExtensions.swift */; settings = {ASSET_TAGS = (); }; };
-		43D6A9491BB4407A00296B03 /* ATPathSpec.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D6A93E1BB4407900296B03 /* ATPathSpec.framework */; settings = {ASSET_TAGS = (); }; };
+		4334FBBF1BC448BF00276534 /* RelPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4334FBBE1BC448BF00276534 /* RelPath.swift */; };
+		4334FBC31BC44DAD00276534 /* PathGlobals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4334FBC21BC44DAD00276534 /* PathGlobals.swift */; };
+		4334FBC91BC4687500276534 /* RelPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4334FBC81BC4687500276534 /* RelPathTests.swift */; };
+		43C3751D1BCAF8CA000A1C37 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C3751C1BCAF8CA000A1C37 /* StringExtensions.swift */; };
+		43D6A9491BB4407A00296B03 /* ATPathSpec.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D6A93E1BB4407900296B03 /* ATPathSpec.framework */; };
 		43D6A95C1BB440D000296B03 /* ATPathSpec.h in Headers */ = {isa = PBXBuildFile; fileRef = 43D6A9591BB440D000296B03 /* ATPathSpec.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		43D6A95D1BB440D000296B03 /* ATPathSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D6A95A1BB440D000296B03 /* ATPathSpec.m */; settings = {ASSET_TAGS = (); }; };
-		43D6A95E1BB440D000296B03 /* ATPathSpecPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 43D6A95B1BB440D000296B03 /* ATPathSpecPrivate.h */; settings = {ASSET_TAGS = (); }; };
-		43D6A9661BB440DC00296B03 /* ATPathSpecIntroTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D6A9601BB440DC00296B03 /* ATPathSpecIntroTests.m */; settings = {ASSET_TAGS = (); }; };
-		43D6A9671BB440DC00296B03 /* ATPathSpecMatchInfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D6A9611BB440DC00296B03 /* ATPathSpecMatchInfoTests.m */; settings = {ASSET_TAGS = (); }; };
-		43D6A9681BB440DC00296B03 /* ATPathSpecMetadataTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D6A9621BB440DC00296B03 /* ATPathSpecMetadataTests.m */; settings = {ASSET_TAGS = (); }; };
-		43D6A9691BB440DC00296B03 /* ATPathSpecMultiComponentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D6A9631BB440DC00296B03 /* ATPathSpecMultiComponentTests.m */; settings = {ASSET_TAGS = (); }; };
-		43D6A96A1BB440DC00296B03 /* ATPathSpecSingleComponentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D6A9641BB440DC00296B03 /* ATPathSpecSingleComponentTests.m */; settings = {ASSET_TAGS = (); }; };
-		43D6A96B1BB440DC00296B03 /* ATPathSpecTokenizerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D6A9651BB440DC00296B03 /* ATPathSpecTokenizerTests.m */; settings = {ASSET_TAGS = (); }; };
+		43D6A95D1BB440D000296B03 /* ATPathSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D6A95A1BB440D000296B03 /* ATPathSpec.m */; };
+		43D6A95E1BB440D000296B03 /* ATPathSpecPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 43D6A95B1BB440D000296B03 /* ATPathSpecPrivate.h */; };
+		43D6A9661BB440DC00296B03 /* ATPathSpecIntroTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D6A9601BB440DC00296B03 /* ATPathSpecIntroTests.m */; };
+		43D6A9671BB440DC00296B03 /* ATPathSpecMatchInfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D6A9611BB440DC00296B03 /* ATPathSpecMatchInfoTests.m */; };
+		43D6A9681BB440DC00296B03 /* ATPathSpecMetadataTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D6A9621BB440DC00296B03 /* ATPathSpecMetadataTests.m */; };
+		43D6A9691BB440DC00296B03 /* ATPathSpecMultiComponentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D6A9631BB440DC00296B03 /* ATPathSpecMultiComponentTests.m */; };
+		43D6A96A1BB440DC00296B03 /* ATPathSpecSingleComponentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D6A9641BB440DC00296B03 /* ATPathSpecSingleComponentTests.m */; };
+		43D6A96B1BB440DC00296B03 /* ATPathSpecTokenizerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D6A9651BB440DC00296B03 /* ATPathSpecTokenizerTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -208,6 +208,7 @@
 				TargetAttributes = {
 					43D6A93D1BB4407900296B03 = {
 						CreatedOnToolsVersion = 7.0;
+						LastSwiftMigration = 0800;
 					};
 					43D6A9471BB4407A00296B03 = {
 						CreatedOnToolsVersion = 7.0;
@@ -386,6 +387,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -405,6 +407,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tarantsov.ATPathSpec;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
